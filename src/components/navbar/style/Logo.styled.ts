@@ -18,8 +18,9 @@ export const LogoDescription = styled.img`
   margin: 5px;
 `;
 export const NavbarStyle = styled.div`
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   text-align: center;
   align-items: center;
 `;

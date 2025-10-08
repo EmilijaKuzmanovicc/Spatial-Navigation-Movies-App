@@ -1,18 +1,16 @@
-import type { FC } from "react";
-import Logo from "./components/Logo";
 import { NavbarStyle } from "./style/Logo.styled";
 import { NavbarItems } from "./constants/NavbarItems";
+import { Logo } from "./components/Logo";
 
-const Navbar: FC = () => {
+export function Navbar() {
   return (
     <NavbarStyle>
       <Logo />
-      <div style={{ display: "flex", gap: "20px", color: "white", paddingRight: "50px" }}>
+      <div style={{ display: "flex", gap: "100px", marginLeft: "50px", color: "white" }}>
         {NavbarItems.map((item) => (
-          <h1 key={item.id}>{item.name}</h1>
+          <h2 key={item.id}>{item.name}</h2>
         ))}
       </div>
     </NavbarStyle>
   );
-};
-export default Navbar;
+}

@@ -1,0 +1,57 @@
+import styled from "styled-components";
+import { BRANDING_COLORS } from "../../constants/Colors";
+
+export const HomePopularContainer = styled.div`
+  width: 1400px;
+  height: 900px;
+  background-color: rgba(144, 138, 138, 0.27);
+`;
+export const TopFiveContainer = styled.div`
+  width: 312px;
+  height: 840px;
+  background-color: ${BRANDING_COLORS.BLACK};
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  h2 {
+    margin-top: 10px;
+    font-size: 24px;
+    font-weight: 700;
+    font-family: inter;
+    color: ${BRANDING_COLORS.WHITE};
+  }
+`;
+
+export const HomeContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+  gap: 40px;
+  align-items: center;
+`;
+
+export const ChannelCartContainer = styled.div`
+  width: 280px;
+  height: 136px;
+  background-color: ${BRANDING_COLORS.LIGHT_BLACK};
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    height: 90px;
+    width: 110px;
+  }
+  h5 {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: inter;
+  }
+`;
