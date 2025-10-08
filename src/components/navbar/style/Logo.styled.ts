@@ -9,7 +9,7 @@ export const LogoContainer = styled.div`
 `;
 export const LogoName = styled.img`
   width: 300px;
-  height: 44px;
+  height: 45px;
   padding: 5px;
 `;
 export const LogoDescription = styled.img`

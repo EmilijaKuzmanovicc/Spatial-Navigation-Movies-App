@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { HomePopularContainer } from "../style/Home.styled";
 import { getPopularMoviesAndSeries } from "../../api/MovieApi";
-import { type DataMedia, type FocusKeyProps } from "../../MovieType";
+import { type DataMedia, type HomeProp } from "../../MovieType";
 import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { MediaContentRow } from "../../components/mediaContentRow/MediaContentRow";
 
-export function HomePopular({ focusKey: focusKeyParam }: FocusKeyProps) {
+export function HomePopular({ onFocus }: HomeProp) {
   const [dataMedia, setDataMedia] = useState<DataMedia>();
 
   const fetchMoviesSeries = async () => {
@@ -18,7 +18,7 @@ export function HomePopular({ focusKey: focusKeyParam }: FocusKeyProps) {
     fetchMoviesSeries();
   }, []);
 
-  const { ref, focusSelf, focusKey } = useFocusable({ focusable: true, trackChildren: true, autoRestoreFocus: true, focusKey: focusKeyParam, onArrowPress: () => true });
+  const { ref, focusSelf, focusKey } = useFocusable({ onFocus });
 
   const onRowFocus = useCallback(
     ({ y }: { y: number }) => {

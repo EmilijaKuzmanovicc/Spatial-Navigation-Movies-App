@@ -20,7 +20,7 @@ export interface Genre {
   id: number;
   name: string;
 }
-//
+
 export type UnifiedMedia = {
   id: number;
   title: string;
@@ -54,7 +54,6 @@ export interface MediaItemProp {
   title: string;
   poster_path: string;
   overview: string;
-  // index: number;
   focusKey: string;
   onFocus: (layout: FocusableComponentLayout, props: object, details: FocusDetails) => void;
 }
@@ -67,4 +66,10 @@ export interface MediaSection {
 export type DataMedia = MediaSection[];
 export interface FocusKeyProps {
   focusKey: string;
+}
+
+export interface HomeProp {
+  title?: string;
+
+  onFocus: (layout: FocusableComponentLayout, props: object, details: FocusDetails) => void;
 }

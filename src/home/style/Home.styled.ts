@@ -31,9 +31,10 @@ export const HomeContainer = styled.div`
   align-items: center;
 `;
 
-export const ChannelCartContainer = styled.div`
+export const ChannelCartContainer = styled.div<{ $focused: boolean }>`
   width: 280px;
   height: 136px;
+  margin: 5px;
   background-color: ${BRANDING_COLORS.LIGHT_BLACK};
   border-radius: 16px;
   display: flex;
@@ -42,6 +43,10 @@ export const ChannelCartContainer = styled.div`
   text-align: center;
   align-items: center;
   justify-content: center;
+  border-color: #ff0000;
+  border-style: solid;
+  border-width: ${({ $focused }) => ($focused ? "3px" : 0)};
+  box-sizing: border-box;
 
   img {
     height: 90px;
@@ -50,6 +55,6 @@ export const ChannelCartContainer = styled.div`
   h5 {
     font-size: 16px;
     font-weight: 400;
-    font-family: inter;
+    color: ${({ $focused }) => ($focused ? `${BRANDING_COLORS.WHITE}` : `${BRANDING_COLORS.LIGHTER_GREY}`)};
   }
 `;

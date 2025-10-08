@@ -1,4 +1,5 @@
-import styled, { css, keyframes } from "styled-components";
+import styled, { css } from "styled-components";
+import { pop } from "../../../constants/Pop";
 import { BRANDING_COLORS } from "../../../constants/Colors";
 
 export const MediaContainer = styled.div`
@@ -17,11 +18,7 @@ export const MediaContainer = styled.div`
     line-height: 1.2;
   }
 `;
-const pop = keyframes`
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1.1); }
-`;
+
 export const MediaItemBox = styled.div<{ $focused: boolean; $poster_path: string }>`
   margin: 10px;
   padding: 10px;
@@ -40,7 +37,6 @@ export const MediaItemBox = styled.div<{ $focused: boolean; $poster_path: string
   color: ${BRANDING_COLORS.WHITE};
   transition: all 0.25s ease-in-out;
   transform: ${({ $focused }) => ($focused ? "scale(1.1)" : "scale(1)")};
-  /* box-shadow: ${({ $focused }) => ($focused ? `0 0 20px ${BRANDING_COLORS.FOCUSED_COLOR}` : `0 0 10px ${BRANDING_COLORS.UNFOCUSED_COLOR}`)}; */
 
   ${({ $focused }) =>
     $focused &&
@@ -86,17 +82,17 @@ export const MediaCart = styled.div`
   justify-content: center;
   text-align: start;
   align-items: center;
-  color: ${BRANDING_COLORS.WHITE};
+`;
 
-  a {
-    padding-top: 10px;
-    font-size: 24px;
-    font-weight: 400;
-    width: 230px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+export const TitleStyle = styled.div<{ $focused: boolean }>`
+  padding-top: 10px;
+  font-size: 24px;
+  font-weight: 400;
+  width: 230px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: ${({ $focused }) => ($focused ? `${BRANDING_COLORS.WHITE}` : `${BRANDING_COLORS.GREY}`)};
 `;
 
 export const RowCard = styled.div`
@@ -105,5 +101,4 @@ export const RowCard = styled.div`
   justify-content: center;
   text-align: center;
   align-items: center;
-  color: ${BRANDING_COLORS.WHITE};
 `;
