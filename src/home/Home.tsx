@@ -5,7 +5,7 @@ import { TopFive } from "./components/TopFive";
 export function Home() {
   return (
     <HomeContainer>
-      <HomePopular />
+      <HomePopular focusKey="HOME" />
       <TopFive />
     </HomeContainer>
   );

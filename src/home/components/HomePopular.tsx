@@ -1,19 +1,41 @@
-import { useEffect, useState, type FC } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { HomePopularContainer } from "../style/Home.styled";
 import { getPopularMoviesAndSeries } from "../../api/MovieApi";
-import type { Movie, Series } from "../../MovieType";
+import { type DataMedia, type FocusKeyProps } from "../../MovieType";
+import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
+import { MediaContentRow } from "../../components/mediaContentRow/MediaContentRow";
 
-export function HomePopular() {
-  const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
-  const [popularSeries, setPopularSeries] = useState<Series[]>([]);
+export function HomePopular({ focusKey: focusKeyParam }: FocusKeyProps) {
+  const [dataMedia, setDataMedia] = useState<DataMedia>();
+
   const fetchMoviesSeries = async () => {
-    const { movies, series } = await getPopularMoviesAndSeries();
-    setPopularMovies(movies);
-    setPopularSeries(series);
+    const data = await getPopularMoviesAndSeries();
+
+    setDataMedia(data);
   };
+
   useEffect(() => {
     fetchMoviesSeries();
   }, []);
 
-  return <HomePopularContainer></HomePopularContainer>;
+  const { ref, focusSelf, focusKey } = useFocusable({ focusable: true, trackChildren: true, autoRestoreFocus: true, focusKey: focusKeyParam, onArrowPress: () => true });
+
+  const onRowFocus = useCallback(
+    ({ y }: { y: number }) => {
+      ref.current.scrollTo({
+        top: y,
+        behavior: "smooth",
+      });
+    },
+    [ref]
+  );
+  useEffect(() => {
+    focusSelf();
+  }, [focusSelf, dataMedia]);
+
+  return (
+    <FocusContext.Provider value={focusKey}>
+      <HomePopularContainer ref={ref}>{dataMedia ? dataMedia.map((data) => <MediaContentRow key={data.name} title={data.name} items={data.items} onFocus={onRowFocus} />) : <div></div>}</HomePopularContainer>
+    </FocusContext.Provider>
+  );
 }

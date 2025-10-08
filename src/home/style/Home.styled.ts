@@ -4,7 +4,6 @@ import { BRANDING_COLORS } from "../../constants/Colors";
 export const HomePopularContainer = styled.div`
   width: 1400px;
   height: 900px;
-  background-color: rgba(144, 138, 138, 0.27);
 `;
 export const TopFiveContainer = styled.div`
   width: 312px;
@@ -20,7 +19,6 @@ export const TopFiveContainer = styled.div`
     margin-top: 10px;
     font-size: 24px;
     font-weight: 700;
-    font-family: inter;
     color: ${BRANDING_COLORS.WHITE};
   }
 `;
@@ -40,7 +38,7 @@ export const ChannelCartContainer = styled.div`
   border-radius: 16px;
   display: flex;
   flex-direction: column;
-
+  gap: 10px;
   text-align: center;
   align-items: center;
   justify-content: center;

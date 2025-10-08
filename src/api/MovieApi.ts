@@ -1,23 +1,31 @@
 import { URLS_API } from "../constants/URLs";
-import type { Genre, Movie, PaginatedResponse, Series } from "../MovieType";
+import type { DataMedia, Genre, Movie, PaginatedResponse, Series, UnifiedMedia } from "../MovieType";
 import { api } from "./Axios";
 
-export const getPopularMoviesAndSeries = async () => {
+export const getPopularMoviesAndSeries = async (): Promise<DataMedia> => {
   const { data: moviesData } = await api.get<PaginatedResponse<Movie>>(URLS_API.GET_MOVIES);
   const { data: seriesData } = await api.get<PaginatedResponse<Series>>(URLS_API.GET_SERIES);
 
-  return {
-    movies: moviesData.results.slice(0, 5).map(({ id, title, poster_path }: Movie) => ({
-      id,
-      title,
-      poster_path,
-    })),
-    series: seriesData.results.slice(0, 5).map(({ id, name, poster_path }: Series) => ({
-      id,
-      name,
-      poster_path,
-    })),
-  };
+  const movies: UnifiedMedia[] = moviesData.results.slice(0, 5).map(({ id, title, poster_path, overview }) => ({
+    id,
+    title,
+    poster_path,
+    overview,
+  }));
+
+  const series: UnifiedMedia[] = seriesData.results.slice(0, 5).map(({ id, name, poster_path, overview }) => ({
+    id,
+    title: name,
+    poster_path,
+    overview,
+  }));
+
+  const dataMedia: DataMedia = [
+    { name: "MOVIES", items: movies },
+    { name: "SERIES", items: series },
+  ];
+
+  return dataMedia;
 };
 
 export const getGenresWithMovies = async () => {
