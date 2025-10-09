@@ -1,16 +1,37 @@
-import { NavbarStyle } from "./style/Logo.styled";
-import { NavbarItems } from "./constants/NavbarItems";
-import { Logo } from "./components/Logo";
+import { ItemsContainer, NavbarItemStyle, NavbarStyle } from "./style/Logo.styled";
 
-export function Navbar() {
+import { Logo } from "./components/Logo";
+import { useEffect, useState } from "react";
+import { NavbarItems } from "./constants/NavbarItems";
+import { setFocus, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
+import type { NavbarProps } from "../../home/Types/HomeTypes";
+
+export function Navbar({ onSelect }: NavbarProps) {
+  const [selectedItem, setSelectedItem] = useState(NavbarItems[0].name);
+
+  useEffect(() => {
+    setFocus("NAVBAR");
+  }, [onSelect]);
+
   return (
     <NavbarStyle>
       <Logo />
-      <div style={{ display: "flex", gap: "100px", marginLeft: "50px", color: "white" }}>
-        {NavbarItems.map((item) => (
-          <h2 key={item.id}>{item.name}</h2>
-        ))}
-      </div>
+      <ItemsContainer>
+        {NavbarItems.map((item) => {
+          const { ref: itemRef, focused } = useFocusable({
+            onFocus: () => {
+              setSelectedItem(item.name);
+              onSelect(item.name);
+            },
+          });
+
+          return (
+            <NavbarItemStyle ref={itemRef} key={item.id} $focused={focused} $selected={selectedItem === item.name}>
+              {item.name}
+            </NavbarItemStyle>
+          );
+        })}
+      </ItemsContainer>
     </NavbarStyle>
   );
 }

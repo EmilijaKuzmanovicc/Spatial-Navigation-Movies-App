@@ -30,7 +30,7 @@ export const MediaItemBox = styled.div<{ $focused: boolean; $poster_path: string
   border-color: ${BRANDING_COLORS.RED};
   border-style: solid;
   flex-shrink: 0;
-  border-width: ${({ $focused }) => ($focused ? "3px" : 0)};
+  border-width: ${({ $focused }) => ($focused ? "6px" : 0)};
   box-sizing: border-box;
   border-radius: 6px;
   display: flex;

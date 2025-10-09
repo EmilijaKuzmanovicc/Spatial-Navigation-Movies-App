@@ -6,7 +6,13 @@ import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-naviga
 import React from "react";
 
 export function TopFive({ onFocus }: HomeProp) {
-  const { ref, focusKey } = useFocusable({ onFocus });
+  const { ref, focusKey } = useFocusable({
+    onFocus,
+    focusable: true,
+    trackChildren: false,
+    saveLastFocusedChild: true,
+    autoRestoreFocus: true,
+  });
   const scrollRef = React.useRef<HTMLDivElement | null>(null);
 
   const onChannelFocus = React.useCallback(

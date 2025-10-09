@@ -45,7 +45,7 @@ export const ChannelCartContainer = styled.div<{ $focused: boolean }>`
   justify-content: center;
   border-color: #ff0000;
   border-style: solid;
-  border-width: ${({ $focused }) => ($focused ? "3px" : 0)};
+  border-width: ${({ $focused }) => ($focused ? "4px" : 0)};
   box-sizing: border-box;
 
   img {

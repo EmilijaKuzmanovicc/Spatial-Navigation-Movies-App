@@ -17,3 +17,6 @@ export interface ChannelItemProp {
   focusKey: string;
   onFocus: (layout: FocusableComponentLayout, props: object, details: FocusDetails) => void;
 }
+export type NavbarProps = {
+  onSelect: React.Dispatch<React.SetStateAction<string>>;
+};

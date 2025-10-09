@@ -12,3 +12,9 @@ export const URLS_API = {
   GET_SERIES_GENRES_LIST: `/genre/tv/list`,
   GET_SERIES_BY_GENRES: `discover/tv`,
 } as const;
+
+export const NAVBAR_ITEMS = {
+  HOME: "HOME",
+  MOVIES: "MOVIES",
+  SERIES: "SERIES",
+};

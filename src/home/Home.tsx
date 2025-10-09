@@ -1,14 +1,14 @@
 import { HomeContainer } from "./style/Home.styled";
 import { HomePopular } from "./components/HomePopular";
 import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { TopFive } from "./components/TopFive";
 import type { FocusKeyProps } from "../MovieType";
 
 export function Home({ focusKey: focusKeyParam }: FocusKeyProps) {
-  const { ref, focusSelf, focusKey } = useFocusable({
+  const { ref, focusKey } = useFocusable({
     focusable: true,
-    trackChildren: false,
+    trackChildren: true,
     saveLastFocusedChild: false,
     autoRestoreFocus: false,
     focusKey: focusKeyParam,
@@ -24,9 +24,6 @@ export function Home({ focusKey: focusKeyParam }: FocusKeyProps) {
     },
     [ref]
   );
-  useEffect(() => {
-    focusSelf();
-  }, [focusSelf]);
 
   return (
     <FocusContext.Provider value={focusKey}>
