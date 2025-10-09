@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 import { NavbarItems } from "./constants/NavbarItems";
 import { setFocus, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import type { NavbarProps } from "../../home/Types/HomeTypes";
+import { ITEMS_NAME } from "../../constants/URLs";
 
 export function Navbar({ onSelect }: NavbarProps) {
-  const [selectedItem, setSelectedItem] = useState(NavbarItems[0].name);
+  const [selectedItem, setSelectedItem] = useState<string>(NavbarItems[0].name);
 
   useEffect(() => {
-    setFocus("NAVBAR");
+    setFocus(ITEMS_NAME.NAVBAR);
   }, [onSelect]);
 
   return (
@@ -19,9 +20,15 @@ export function Navbar({ onSelect }: NavbarProps) {
       <ItemsContainer>
         {NavbarItems.map((item) => {
           const { ref: itemRef, focused } = useFocusable({
+            onEnterPress: () => {
+              onSelect(item.name);
+            },
             onFocus: () => {
               setSelectedItem(item.name);
-              onSelect(item.name);
+            },
+
+            onArrowPress: (direction) => {
+              return direction === "up" ? false : true;
             },
           });
 

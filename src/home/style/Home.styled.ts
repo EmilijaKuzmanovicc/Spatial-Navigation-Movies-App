@@ -39,7 +39,7 @@ export const ChannelCartContainer = styled.div<{ $focused: boolean }>`
   border-radius: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  /* gap: 10px; */
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -49,12 +49,21 @@ export const ChannelCartContainer = styled.div<{ $focused: boolean }>`
   box-sizing: border-box;
 
   img {
-    height: 90px;
-    width: 110px;
+    padding: 10px;
+    height: auto;
+    width: 90px;
   }
   h5 {
+    padding-bottom: 5px;
     font-size: 16px;
     font-weight: 400;
     color: ${({ $focused }) => ($focused ? `${BRANDING_COLORS.WHITE}` : `${BRANDING_COLORS.LIGHTER_GREY}`)};
   }
+`;
+
+export const ImageDivStyle = styled.div`
+  height: 90px;
+  text-align: center;
+  align-items: center;
+  display: flex;
 `;
