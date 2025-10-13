@@ -1,0 +1,45 @@
+import type { Genre } from "./MediaInformationType";
+
+export interface Creator {
+  id: number;
+  credit_id: string;
+  name: string;
+  gender: number | null;
+  profile_path: string | null;
+}
+
+export interface Season {
+  id: number;
+  name: string;
+  overview: string;
+  air_date: string | null;
+  episode_count: number;
+  poster_path: string | null;
+  season_number: number;
+}
+
+export interface SeriesInformation {
+  id: number;
+  adult: boolean;
+  name: string;
+  original_name: string;
+  overview: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  first_air_date: string;
+  last_air_date: string;
+  genres: Genre[];
+  origin_country: string[];
+  original_language: string;
+  homepage: string | null;
+  status: string;
+  type: string;
+  number_of_seasons: number;
+  number_of_episodes: number;
+  vote_average: number;
+  vote_count: number;
+  tagline: string | null;
+  popularity: number;
+  created_by: Creator[];
+  seasons: Season[];
+}

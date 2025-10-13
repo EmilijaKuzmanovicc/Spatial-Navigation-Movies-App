@@ -1,7 +1,7 @@
+import { popularChannels } from "../../../constants/Chanels";
+import type { HomeProp } from "../../../MovieType";
 import { TopFiveContainer } from "../style/Home.styled";
-import { popularChannels } from "../../constants/Chanels";
 import ChannelCard from "./ChannelCard";
-import type { HomeProp } from "../../MovieType";
 import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import React from "react";
 

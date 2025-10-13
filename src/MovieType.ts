@@ -4,12 +4,14 @@ export interface PaginatedResponse<T> {
   results: T[];
 }
 export interface Movie {
+  type: string;
   id: number;
   title: string;
   poster_path?: string;
   overview?: string;
 }
 export interface Series {
+  type: string;
   id: number;
   name: string;
   poster_path?: string;
@@ -22,6 +24,7 @@ export interface Genre {
 }
 
 export type UnifiedMedia = {
+  type: string;
   id: number;
   title: string;
   poster_path?: string;
@@ -29,6 +32,7 @@ export type UnifiedMedia = {
 };
 export function mapMovieToUnified(movie: Movie): UnifiedMedia {
   return {
+    type: movie.type,
     id: movie.id,
     title: movie.title,
     poster_path: movie.poster_path,
@@ -38,6 +42,7 @@ export function mapMovieToUnified(movie: Movie): UnifiedMedia {
 
 export function mapSeriesToUnified(series: Series): UnifiedMedia {
   return {
+    type: series.type,
     id: series.id,
     title: series.name,
     poster_path: series.poster_path,
@@ -51,6 +56,8 @@ export interface MediaProps<T extends UnifiedMedia> {
   onFocus: (layout: FocusableComponentLayout, props: object, details: FocusDetails) => void;
 }
 export interface MediaItemProp {
+  type: string;
+  id: number;
   title: string;
   poster_path: string;
   overview: string;
@@ -72,4 +79,9 @@ export interface HomeProp {
   title?: string;
 
   onFocus: (layout: FocusableComponentLayout, props: object, details: FocusDetails) => void;
+}
+
+export interface GenresWithMoviesProps {
+  genre: string;
+  movies: Movie[];
 }

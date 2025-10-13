@@ -11,4 +11,5 @@ export const BRANDING_COLORS = {
   BLACK: "#000000",
   LIGHT_BLACK: "#181818",
   RED: "#ED1C24",
+  BACK_BUTTON: "#2F2F2FFF",
 };

@@ -1,24 +1,22 @@
-import { useCallback, useEffect, useState } from "react";
+import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
+import { useState, useEffect, useCallback } from "react";
+import { getPopularMoviesAndSeries } from "../../../api/MovieApi";
+import { MediaContentRow } from "../../../components/mediaContentRow/MediaContentRow";
+import type { HomeProp, DataMedia } from "../../../MovieType";
 import { HomePopularContainer } from "../style/Home.styled";
-import { getPopularMoviesAndSeries } from "../../api/MovieApi";
-import { type DataMedia, type HomeProp } from "../../MovieType";
-import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import { MediaContentRow } from "../../components/mediaContentRow/MediaContentRow";
 
 export function HomePopular({ onFocus }: HomeProp) {
   const [dataMedia, setDataMedia] = useState<DataMedia>();
+  const { ref, focusSelf, focusKey } = useFocusable({ onFocus });
 
   const fetchMoviesSeries = async () => {
     const data = await getPopularMoviesAndSeries();
-
     setDataMedia(data);
   };
 
   useEffect(() => {
     fetchMoviesSeries();
   }, []);
-
-  const { ref, focusSelf, focusKey } = useFocusable({ onFocus });
 
   const onRowFocus = useCallback(
     ({ y }: { y: number }) => {
@@ -29,6 +27,7 @@ export function HomePopular({ onFocus }: HomeProp) {
     },
     [ref]
   );
+
   useEffect(() => {
     focusSelf();
   }, [focusSelf, dataMedia]);

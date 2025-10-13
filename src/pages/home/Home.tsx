@@ -3,14 +3,14 @@ import { HomePopular } from "./components/HomePopular";
 import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useCallback } from "react";
 import { TopFive } from "./components/TopFive";
-import type { FocusKeyProps } from "../MovieType";
+import type { FocusKeyProps } from "../../MovieType";
 
 export function Home({ focusKey: focusKeyParam }: FocusKeyProps) {
   const { ref, focusKey } = useFocusable({
     focusable: true,
     trackChildren: true,
-    saveLastFocusedChild: false,
-    autoRestoreFocus: false,
+    saveLastFocusedChild: true,
+    autoRestoreFocus: true,
     focusKey: focusKeyParam,
     onArrowPress: () => true,
   });

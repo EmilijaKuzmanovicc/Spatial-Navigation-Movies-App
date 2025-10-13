@@ -19,4 +19,5 @@ export interface ChannelItemProp {
 }
 export type NavbarProps = {
   onSelect: React.Dispatch<React.SetStateAction<string>>;
+  activeItem: string;
 };

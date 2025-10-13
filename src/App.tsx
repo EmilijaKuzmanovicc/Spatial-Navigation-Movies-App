@@ -1,10 +1,10 @@
 import { init } from "@noriginmedia/norigin-spatial-navigation";
 import { Navbar } from "./components/navbar/Navbar";
-import { Home } from "./home/Home";
-import { useState } from "react";
-import { Movies } from "./movies/Movies";
-import { Series } from "./series/Series";
 import { ITEMS_NAME } from "./constants/URLs";
+import { useState } from "react";
+import { Home } from "./pages/home/Home";
+import { Movies } from "./pages/movies/Movies";
+import { Series } from "./pages/series/Series";
 
 init({
   debug: true,
@@ -13,9 +13,10 @@ init({
 
 function App() {
   const [activePage, setActivePage] = useState<string>(ITEMS_NAME.HOME);
+
   return (
     <>
-      <Navbar onSelect={setActivePage} />
+      <Navbar onSelect={setActivePage} activeItem={activePage} />
       <div style={{ display: activePage === ITEMS_NAME.HOME ? "block" : "none" }}>
         <Home focusKey={ITEMS_NAME.HOME} />
       </div>
