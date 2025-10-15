@@ -3,15 +3,13 @@ import { BRANDING_COLORS } from "../../../constants/Colors";
 
 export const LogoContainer = styled.div`
   width: 350px;
-  padding: 10px;
-  margin: 5px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
 `;
 export const LogoName = styled.img`
-  width: 300px;
-  height: 45px;
-  padding: 5px;
+  width: 302px;
+  height: 60px;
 `;
 export const LogoDescription = styled.img`
   width: 300px;
@@ -24,6 +22,8 @@ export const NavbarStyle = styled.div`
   justify-content: start;
   text-align: center;
   align-items: center;
+  position: relative;
+  z-index: 2;
 `;
 
 export const ItemsContainer = styled.div`

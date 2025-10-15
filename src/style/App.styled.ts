@@ -12,7 +12,6 @@ export const GlobalStyle = createGlobalStyle`
   font-style: normal;
 }
 `;
-
 export const GlobalStyleDiv = styled.div`
   height: 1080px;
   width: 1920px;

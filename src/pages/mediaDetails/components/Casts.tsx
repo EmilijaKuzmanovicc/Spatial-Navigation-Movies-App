@@ -4,40 +4,32 @@ import { getActorsAndDirector } from "../../../api/MovieApi";
 
 export function Casts({ movie, type }: MediaInformationProps) {
   const [movieDirector, setMovieDirector] = useState<string | undefined>();
-
   const [movieCast, setMovieCast] = useState<string[] | undefined>([]);
+
   const fetchData = async () => {
     const crew: ActorsDirectorProps | null = await getActorsAndDirector(movie.id.toString(), type);
     setMovieDirector(crew?.director);
     setMovieCast(crew?.actors);
   };
-  const cratedBy = "first_air_date" in movie ? movie.created_by.map((el) => el.name) : [];
-
   useEffect(() => {
     fetchData();
   }, []);
   return (
     <>
       <h5>
-        {"release_date" in movie ? (
+        {movie.type === "movie" ? (
           <>
             <strong>Director:</strong> {movieDirector || "No info for director"}
           </>
         ) : (
           <>
-            <strong>Created by:</strong> {cratedBy.length === 0 ? "No info for creator" : cratedBy}
+            <strong>Created by:</strong> {movie.created_by?.length ? movie.created_by.map((c) => c.name).join(", ") : "No info for creator"}
           </>
         )}
       </h5>
 
       <h5>
-        <strong>Cast: </strong>
-        {movieCast!.map((actor, index) => (
-          <span key={index}>
-            {actor}
-            {index < movieCast!.length - 1 ? ", " : ""}
-          </span>
-        ))}
+        <strong>Cast:</strong> {movieCast?.length ? movieCast.join(", ") : "No info for cast"}
       </h5>
     </>
   );

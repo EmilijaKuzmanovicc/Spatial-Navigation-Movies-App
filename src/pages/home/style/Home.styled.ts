@@ -26,8 +26,6 @@ export const TopFiveContainer = styled.div`
 export const HomeContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 20px;
-  gap: 40px;
   align-items: center;
 `;
 
@@ -39,7 +37,6 @@ export const ChannelCartContainer = styled.div<{ $focused: boolean }>`
   border-radius: 16px;
   display: flex;
   flex-direction: column;
-  /* gap: 10px; */
   text-align: center;
   align-items: center;
   justify-content: center;

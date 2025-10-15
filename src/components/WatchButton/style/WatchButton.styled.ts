@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { BRANDING_COLORS } from "../../../constants/Colors";
 
 export const WatchButtonStyle = styled.button<{ $focused: boolean }>`
-  margin: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   width: 286px;
   height: 78px;
   justify-content: center;

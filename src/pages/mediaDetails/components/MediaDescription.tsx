@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
-import type { MovieDetailsProp, MovieInformation } from "../types/MediaInformationType";
+import type { MovieDetailsProp } from "../types/MediaInformationType";
 import { MediaDetailsStyle, MediaInformationBody, PosterPath } from "../style/MediaDetails.styled";
 import { BodyInformations } from "./BodyInformations";
-import type { SeriesInformation } from "../types/SeriesInformationType";
-import { PATHS } from "../../../constants/URLs";
+import type { MediaInformation } from "../types/SeriesInformationType";
 import { MediaInformationHeader } from "./MediaInfomationsHeader";
 import { getDetails } from "../../../api/MovieApi";
 
-export function MediaDescription({ id, type }: MovieDetailsProp) {
-  const [movieInfomations, setMovieInfomations] = useState<MovieInformation | SeriesInformation>();
+export function MediaDescription({ id, type, setBackdrop }: MovieDetailsProp) {
+  const [movieInfomations, setMovieInfomations] = useState<MediaInformation>();
+
   const fetchData = async () => {
-    const data = type === PATHS.MOVIE_TYPE ? await getDetails<MovieInformation>(id, type) : await getDetails<SeriesInformation>(id, type);
+    const data = await getDetails(id, type);
     setMovieInfomations(data);
+    if (setBackdrop && data.backdrop_path) {
+      setBackdrop(data.backdrop_path);
+    }
   };
+
   useEffect(() => {
     fetchData();
   }, [id]);
   if (!movieInfomations) {
     return null;
   }
+
   return (
     <MediaDetailsStyle>
       <MediaInformationHeader movie={movieInfomations} type={type} />

@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { BRANDING_COLORS } from "../../../constants/Colors";
 
 export const MediaDetailContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  background-color: ${BRANDING_COLORS.LIGHT_BLACK};
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  z-index: 1;
 `;
 
 export const BackButton = styled.button<{ $focused: boolean }>`
@@ -33,7 +34,6 @@ export const MediaDetailsStyle = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  /* background-color: ${BRANDING_COLORS.GREY}; */
 `;
 
 export const TextMovieStyle = styled.div`

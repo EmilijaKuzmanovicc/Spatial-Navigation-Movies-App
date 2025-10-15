@@ -14,7 +14,6 @@ export function Home({ focusKey: focusKeyParam }: FocusKeyProps) {
     focusKey: focusKeyParam,
     onArrowPress: () => true,
   });
-
   const onRowFocus = useCallback(
     ({ x }: { x: number }) => {
       ref.current.scrollTo({

@@ -3,20 +3,6 @@ import type { FocusableComponentLayout, FocusDetails } from "@noriginmedia/norig
 export interface PaginatedResponse<T> {
   results: T[];
 }
-export interface Movie {
-  type: string;
-  id: number;
-  title: string;
-  poster_path?: string;
-  overview?: string;
-}
-export interface Series {
-  type: string;
-  id: number;
-  name: string;
-  poster_path?: string;
-  overview?: string;
-}
 
 export interface Genre {
   id: number;
@@ -24,38 +10,34 @@ export interface Genre {
 }
 
 export type UnifiedMedia = {
-  type: string;
+  type: "movie" | "series";
   id: number;
   title: string;
   poster_path?: string;
+  backdrop_path?: string;
   overview?: string;
 };
-export function mapMovieToUnified(movie: Movie): UnifiedMedia {
-  return {
-    type: movie.type,
-    id: movie.id,
-    title: movie.title,
-    poster_path: movie.poster_path,
-    overview: movie.overview,
-  };
+
+export interface Movie extends UnifiedMedia {
+  type: "movie";
 }
 
-export function mapSeriesToUnified(series: Series): UnifiedMedia {
-  return {
-    type: series.type,
-    id: series.id,
-    title: series.name,
-    poster_path: series.poster_path,
-    overview: series.overview,
-  };
+export interface Series extends Omit<UnifiedMedia, "title"> {
+  type: "series";
+  name: string;
 }
 export interface MediaProps<T extends UnifiedMedia> {
+  sizeW: string;
+  sizeH: string;
   focusKey?: string;
   title: string;
   items: T[];
   onFocus: (layout: FocusableComponentLayout, props: object, details: FocusDetails) => void;
+  onMediaFocus?: (movie: UnifiedMedia) => void;
 }
 export interface MediaItemProp {
+  sizeW: string;
+  sizeH: string;
   type: string;
   id: number;
   title: string;
@@ -70,7 +52,6 @@ export interface MediaSection {
   items: UnifiedMedia[];
 }
 
-export type DataMedia = MediaSection[];
 export interface FocusKeyProps {
   focusKey: string;
 }
