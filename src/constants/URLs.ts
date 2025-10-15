@@ -8,6 +8,7 @@ export const URL_IMAGES = {
   BACK_ICON: "/assets/images/back_icon.png",
   PLAY: "/assets/images/play.png",
   LOGO: "/assets/images/logo.png",
+  IMAGE_NOT_FOUND: "/assets/images/no_poster.png",
 };
 
 export const URLS_API = {

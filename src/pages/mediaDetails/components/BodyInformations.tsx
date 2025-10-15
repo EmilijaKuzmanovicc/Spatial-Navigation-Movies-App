@@ -3,12 +3,12 @@ import { WatchButton } from "../../../components/WatchButton/WatchButton";
 import { Casts } from "./Casts";
 import type { MediaInformationProps } from "../types/MediaInformationType";
 
-export function BodyInformations({ movie, type }: MediaInformationProps) {
+export function BodyInformations({ media, type }: MediaInformationProps) {
   return (
     <BodyInformationsStyle>
-      <h2>{movie.title}</h2>
-      <h4>{movie.overview}</h4> <Casts movie={movie} type={type} />
-      <WatchButton focusKey={`WATCH_BUTTON_${movie.id}`} />
+      <h2>{media.title}</h2>
+      <h4>{media.overview}</h4> <Casts media={media} type={type} />
+      <WatchButton focusKey={`WATCH_BUTTON_${media.id}`} />
     </BodyInformationsStyle>
   );
 }

@@ -1,5 +1,5 @@
 import { PATHS, URLS_API } from "../constants/URLs";
-import type { Genre, GenresWithMoviesProps, MediaSection, Movie, PaginatedResponse, Series } from "../MovieType";
+import type { Genre, GenresWithMediaProps, MediaSection, Movie, PaginatedResponse, Series, UnifiedMedia } from "../MovieType";
 import type { ActorsDirectorProps, CreditsResponse } from "../pages/mediaDetails/types/MediaInformationType";
 import type { MediaInformation } from "../pages/mediaDetails/types/SeriesInformationType";
 import { api } from "./Axios";
@@ -29,11 +29,9 @@ export const getPopularMoviesAndSeries = async (): Promise<MediaSection[]> => {
       })),
     },
   ];
-
   return dataMedia;
 };
-
-export const getGenresWithMovies = async (): Promise<GenresWithMoviesProps[]> => {
+export const getGenresWithMovies = async (): Promise<GenresWithMediaProps[]> => {
   try {
     const { data: genresData } = await api.get<{ genres: Genre[] }>(URLS_API.GET_MOVIE_GENRES_LIST);
     const genres: Genre[] = genresData.genres;
@@ -42,33 +40,33 @@ export const getGenresWithMovies = async (): Promise<GenresWithMoviesProps[]> =>
 
     const moviesByGenre = await Promise.all(
       genres.map(async (genre: Genre) => {
-        let uniqueMovies: Movie[] = [];
+        const uniqueMovies: UnifiedMedia[] = [];
         let page = 1;
 
         while (uniqueMovies.length < 10) {
-          const { data: moviesData } = await api.get<PaginatedResponse<Movie>>(URLS_API.GET_MOVIES_BY_GENRES, {
-            params: {
-              with_genres: genre.id,
-              page,
-            },
+          const { data: moviesData } = await api.get<PaginatedResponse<UnifiedMedia>>(URLS_API.GET_MOVIES_BY_GENRES, {
+            params: { with_genres: genre.id, page },
           });
-          const filtered = moviesData.results.filter(({ id }) => !addedMovieIds.has(id));
-          uniqueMovies.push(...filtered);
 
-          if (moviesData.results.length === 0) break;
+          if (!moviesData.results || moviesData.results.length === 0) break;
+
+          for (const movie of moviesData.results) {
+            if (uniqueMovies.length >= 10) break;
+            if (!addedMovieIds.has(movie.id)) {
+              uniqueMovies.push(movie);
+              addedMovieIds.add(movie.id);
+            }
+          }
+
           page++;
         }
 
-        uniqueMovies = uniqueMovies.slice(0, 10);
-
-        uniqueMovies.forEach(({ id }) => addedMovieIds.add(id));
-
         return {
           genre: genre.name,
-          movies: uniqueMovies.map(({ id, title, poster_path, overview, backdrop_path }) => ({
+          media: uniqueMovies.map(({ id, title, poster_path, overview, backdrop_path }) => ({
             type: "movie" as const,
             id,
-            title,
+            title: title || "Untitled",
             poster_path,
             overview,
             backdrop_path,
@@ -76,6 +74,7 @@ export const getGenresWithMovies = async (): Promise<GenresWithMoviesProps[]> =>
         };
       })
     );
+
     return moviesByGenre;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -83,41 +82,63 @@ export const getGenresWithMovies = async (): Promise<GenresWithMoviesProps[]> =>
   }
 };
 
-export const getGenresWithSeries = async () => {
+export const getGenresWithSeries = async (): Promise<GenresWithMediaProps[]> => {
   try {
     const { data: genresData } = await api.get<{ genres: Genre[] }>(URLS_API.GET_SERIES_GENRES_LIST);
     const genres: Genre[] = genresData.genres;
+
     const addedSeriesIds = new Set<number>();
+
     const seriesByGenre = await Promise.all(
       genres.map(async (genre: Genre) => {
-        let uniqueSeries: Series[] = [];
+        const uniqueSeries: UnifiedMedia[] = [];
         let page = 1;
 
         while (uniqueSeries.length < 10) {
-          const { data: seriesData } = await api.get<PaginatedResponse<Series>>(URLS_API.GET_SERIES_BY_GENRES, {
-            params: {
-              with_genres: genre.id,
-              page,
-            },
+          const { data: seriesData } = await api.get<PaginatedResponse<UnifiedMedia>>(URLS_API.GET_SERIES_BY_GENRES, {
+            params: { with_genres: genre.id, page },
           });
-          const filtered = seriesData.results.filter(({ id }) => !addedSeriesIds.has(id));
-          uniqueSeries.push(...filtered);
-          if (seriesData.results.length === 0) break;
+
+          if (!seriesData.results || seriesData.results.length === 0) break;
+
+          for (const series of seriesData.results) {
+            if (uniqueSeries.length >= 10) break;
+            if (!addedSeriesIds.has(series.id)) {
+              uniqueSeries.push(series);
+              addedSeriesIds.add(series.id);
+            }
+          }
+
           page++;
         }
-        uniqueSeries = uniqueSeries.slice(0, 10);
-        uniqueSeries.forEach(({ id }) => addedSeriesIds.add(id));
+
+        const mediaWithBackdrop = await Promise.all(
+          uniqueSeries.map(async ({ id, title, name, poster_path, overview, backdrop_path }) => {
+            if (!backdrop_path) {
+              try {
+                const { data: imagesData } = await api.get<{ backdrops: { file_path: string }[] }>(`${URLS_API.SERIES_DETAIL}/${id}/images`);
+                if (imagesData.backdrops && imagesData.backdrops.length > 0) {
+                  backdrop_path = imagesData.backdrops[0].file_path;
+                }
+              } catch (error) {
+                console.warn(`Could not fetch images for series ${id}:`, error);
+              }
+            }
+
+            return {
+              type: "series" as const,
+              id,
+              title: title || name || "Untitled",
+              poster_path,
+              overview,
+              backdrop_path,
+            };
+          })
+        );
 
         return {
           genre: genre.name,
-          series: uniqueSeries.map(({ id, name, poster_path, overview, backdrop_path }) => ({
-            type: "series" as const,
-            id,
-            name,
-            poster_path,
-            overview,
-            backdrop_path,
-          })),
+          media: mediaWithBackdrop,
         };
       })
     );

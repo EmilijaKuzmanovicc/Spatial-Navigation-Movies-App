@@ -26,10 +26,10 @@ export function MediaDescription({ id, type, setBackdrop }: MovieDetailsProp) {
 
   return (
     <MediaDetailsStyle>
-      <MediaInformationHeader movie={movieInfomations} type={type} />
+      <MediaInformationHeader media={movieInfomations} type={type} />
       <MediaInformationBody>
         <PosterPath $backgroundColor={movieInfomations.poster_path ? movieInfomations.poster_path : ""} />
-        <BodyInformations movie={movieInfomations} type={type} />
+        <BodyInformations media={movieInfomations} type={type} />
       </MediaInformationBody>
     </MediaDetailsStyle>
   );

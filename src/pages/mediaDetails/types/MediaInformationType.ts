@@ -32,7 +32,7 @@ export interface GenreProps {
 }
 
 export interface MediaInformationProps {
-  movie: MediaInformation;
+  media: MediaInformation;
   type: "movie" | "series";
 }
 

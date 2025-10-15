@@ -1,5 +1,5 @@
 import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import type { FocusKeyProps, GenresWithMoviesProps, UnifiedMedia } from "../../MovieType";
+import type { FocusKeyProps, GenresWithMediaProps, UnifiedMedia } from "../../MovieType";
 import { useCallback, useEffect, useState } from "react";
 import { MediaContentRow } from "../../components/mediaContentRow/MediaContentRow";
 import { DetailPosterPicture, MediaListContainer, MediaListScroll, MediaListWraper, MediaShortInformation, MoviesContainer } from "./style/Movies.styles";
@@ -14,13 +14,13 @@ export function Movies({ focusKey: focusKeyParam }: FocusKeyProps) {
     onArrowPress: () => true,
   });
 
-  const [genresWithMovies, setGenresWithMovies] = useState<GenresWithMoviesProps[]>([]);
+  const [genresWithMovies, setGenresWithMovies] = useState<GenresWithMediaProps[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<UnifiedMedia | null>(null);
 
   const fetchMoviesSeries = async () => {
     const listgenre = await getGenresWithMovies();
     setGenresWithMovies(listgenre);
-    const firstMovie = listgenre[0]?.movies[0];
+    const firstMovie = listgenre[0]?.media[0];
     if (firstMovie) setSelectedMovie(firstMovie);
   };
 
@@ -59,7 +59,7 @@ export function Movies({ focusKey: focusKeyParam }: FocusKeyProps) {
             <MediaListScroll ref={ref}>
               <MediaListWraper>
                 {genresWithMovies.map((movies) => {
-                  return <MediaContentRow sizeH="266px" sizeW="440px" key={movies.genre} items={movies.movies} title={movies.genre} onFocus={onRowFocus} onMediaFocus={onMovieFocus} />;
+                  return <MediaContentRow sizeH="266px" sizeW="440px" key={movies.genre} items={movies.media} title={movies.genre} onFocus={onRowFocus} onMediaFocus={onMovieFocus} />;
                 })}
               </MediaListWraper>
             </MediaListScroll>

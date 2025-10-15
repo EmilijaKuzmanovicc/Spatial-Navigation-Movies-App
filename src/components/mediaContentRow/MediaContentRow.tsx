@@ -35,7 +35,7 @@ export function MediaContentRow({ sizeH, sizeW, items, title, onFocus, onMediaFo
                 sizeW={sizeW}
                 type={media.type}
                 id={media.id}
-                key={media.title}
+                key={`${media.type}-${media.title}-${media.id}`}
                 title={media.title}
                 poster_path={sizeW === "440px" ? (media.backdrop_path ? media.backdrop_path : "") : media.poster_path ? media.poster_path : ""}
                 overview={media.overview ? media.overview : ""}

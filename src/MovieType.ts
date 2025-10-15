@@ -13,6 +13,7 @@ export type UnifiedMedia = {
   type: "movie" | "series";
   id: number;
   title: string;
+  name?: string;
   poster_path?: string;
   backdrop_path?: string;
   overview?: string;
@@ -62,7 +63,7 @@ export interface HomeProp {
   onFocus: (layout: FocusableComponentLayout, props: object, details: FocusDetails) => void;
 }
 
-export interface GenresWithMoviesProps {
+export interface GenresWithMediaProps {
   genre: string;
-  movies: Movie[];
+  media: UnifiedMedia[];
 }
