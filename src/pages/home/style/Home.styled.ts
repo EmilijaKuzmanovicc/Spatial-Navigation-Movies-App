@@ -56,6 +56,11 @@ export const ChannelCartContainer = styled.div<{ $focused: boolean }>`
     font-weight: 400;
     color: ${({ $focused }) => ($focused ? `${BRANDING_COLORS.WHITE}` : `${BRANDING_COLORS.LIGHTER_GREY}`)};
   }
+
+  &:hover {
+    border-color: #ff0000;
+    border-width: 4px;
+  }
 `;
 
 export const ImageDivStyle = styled.div`

@@ -9,7 +9,7 @@ export function TopFive({ onFocus }: HomeProp) {
   const { ref, focusKey } = useFocusable({
     onFocus,
     focusable: true,
-    trackChildren: false,
+    trackChildren: true,
     saveLastFocusedChild: true,
     autoRestoreFocus: true,
   });
@@ -24,12 +24,13 @@ export function TopFive({ onFocus }: HomeProp) {
     },
     [scrollRef]
   );
+
   return (
     <FocusContext.Provider value={focusKey}>
       <TopFiveContainer ref={ref}>
         <h2>Top 5 Channels</h2>
-        {popularChannels.map((item) => (
-          <ChannelCard key={item.name} channel={item} focusKey={item.name} onFocus={onChannelFocus} />
+        {popularChannels.map((item, index) => (
+          <ChannelCard index={index} key={item.name} channel={item} focusKey={item.name} onFocus={onChannelFocus} />
         ))}
       </TopFiveContainer>
     </FocusContext.Provider>

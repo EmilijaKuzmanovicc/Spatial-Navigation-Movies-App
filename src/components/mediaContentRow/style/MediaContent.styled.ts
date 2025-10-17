@@ -18,92 +18,43 @@ export const MediaContainer = styled.div`
     line-height: 1.2;
   }
 `;
-export const MediaItemBox = styled.div.attrs<{
-  $focused: boolean;
-  $poster_path: string;
-  $sizeH: string;
-  $sizeW: string;
-}>((props) => {
-  const isLocal = props.$poster_path.startsWith("/");
-  const imageUrl = isLocal ? `${import.meta.env.VITE_TMDB_IMAGE_URL}${props.$poster_path}` : `${URL_IMAGES.IMAGE_NOT_FOUND}`;
-
-  return {
-    style: {
-      height: props.$sizeH,
-      width: props.$sizeW,
-      backgroundImage: `url(${imageUrl})`,
-      borderWidth: props.$focused ? "6px" : "0",
-      transform: props.$focused ? "scale(1.1)" : "scale(1)",
-    },
-  };
-})<{
+const focusedStyles = css`
+  padding: 5px;
+  transform: scale(1.1);
+  border-width: 6px;
+  border-color: ${BRANDING_COLORS.RED};
+  animation: ${pop} 0.3s ease-out;
+  cursor: pointer;
+`;
+export const MediaItemBox = styled.div<{
   $focused: boolean;
   $poster_path: string;
   $sizeH: string;
   $sizeW: string;
 }>`
-  background-color: ${BRANDING_COLORS.GREY};
   margin: 10px;
   padding: 10px;
   background-size: cover;
   background-position: center;
-  border-color: ${BRANDING_COLORS.RED};
   border-style: solid;
+  border-radius: 6px;
   flex-shrink: 0;
   box-sizing: border-box;
-  border-radius: 6px;
   display: flex;
-  color: ${BRANDING_COLORS.WHITE};
+  height: ${({ $sizeH }) => $sizeH};
+  width: ${({ $sizeW }) => $sizeW};
+  background-image: ${({ $poster_path }) => {
+    const isLocal = $poster_path.startsWith("/");
+    return isLocal ? `url(${import.meta.env.VITE_TMDB_IMAGE_URL}${$poster_path})` : `url(${URL_IMAGES.IMAGE_NOT_FOUND})`;
+  }};
   transition: all 0.25s ease-in-out;
 
-  ${({ $focused }) =>
-    $focused &&
-    css`
-      padding: 5px;
-      animation: ${pop} 0.3s ease-out;
-    `}
+  ${({ $focused }) => $focused && focusedStyles}
+
+  &:hover {
+    ${focusedStyles}
+  }
 `;
-
-// export const MediaItemBox = styled.div.attrs<{
-//   $focused: boolean;
-//   $poster_path: string;
-//   $sizeH: string;
-//   $sizeW: string;
-// }>((props) => ({
-//   style: {
-//     height: props.$sizeH,
-//     width: props.$sizeW,
-//     backgroundImage: `url(${import.meta.env.VITE_TMDB_IMAGE_URL}${props.$poster_path})`,
-//     borderWidth: props.$focused ? "6px" : "0",
-//     transform: props.$focused ? "scale(1.1)" : "scale(1)",
-//   },
-// }))<{
-//   $focused: boolean;
-//   $poster_path: string;
-//   $sizeH: string;
-//   $sizeW: string;
-// }>`
-//   background-color: ${BRANDING_COLORS.GREY};
-//   margin: 10px;
-//   padding: 10px;
-//   background-size: cover;
-//   background-position: center;
-//   border-color: ${BRANDING_COLORS.RED};
-//   border-style: solid;
-//   flex-shrink: 0;
-//   box-sizing: border-box;
-//   border-radius: 6px;
-//   display: flex;
-//   color: ${BRANDING_COLORS.WHITE};
-//   transition: all 0.25s ease-in-out;
-
-//   ${({ $focused }) =>
-//     $focused &&
-//     css`
-//       padding: 5px;
-//       animation: ${pop} 0.3s ease-out;
-//     `}
-// `;
 
 export const MediaWrapper = styled.div`
   padding: 20px;

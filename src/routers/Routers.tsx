@@ -13,15 +13,15 @@ export const Router = createBrowserRouter([
     children: [
       {
         path: PATHS.HOME,
-        element: <Home focusKey={ITEMS_NAME.HOME} />,
+        element: <Home />,
       },
       {
         path: PATHS.MOVIES,
-        element: <Movies focusKey={ITEMS_NAME.MOVIES} />,
+        element: <Movies />,
       },
       {
         path: PATHS.SERIES,
-        element: <Series focusKey={ITEMS_NAME.SERIES} />,
+        element: <Series />,
       },
     ],
   },

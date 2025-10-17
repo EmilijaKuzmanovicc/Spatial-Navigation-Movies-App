@@ -3,23 +3,23 @@ import { HomePopular } from "./components/HomePopular";
 import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useCallback } from "react";
 import { TopFive } from "./components/TopFive";
-import type { FocusKeyProps } from "../../MovieType";
 
-export function Home({ focusKey: focusKeyParam }: FocusKeyProps) {
+export function Home() {
   const { ref, focusKey } = useFocusable({
     focusable: true,
     trackChildren: true,
     saveLastFocusedChild: true,
     autoRestoreFocus: true,
-    focusKey: focusKeyParam,
     onArrowPress: () => true,
   });
   const onRowFocus = useCallback(
     ({ x }: { x: number }) => {
-      ref.current.scrollTo({
-        left: x,
-        behavior: "smooth",
-      });
+      if (ref.current) {
+        ref.current.scrollTo({
+          left: x,
+          behavior: "smooth",
+        });
+      }
     },
     [ref]
   );

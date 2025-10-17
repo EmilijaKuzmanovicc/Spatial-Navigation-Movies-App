@@ -38,7 +38,7 @@ export const NavbarItemStyle = styled.div<{ $focused: boolean; $selected: boolea
   font-size: 24px;
   line-height: 100%;
   letter-spacing: 6%;
-  color: ${({ $selected }) => ($selected ? BRANDING_COLORS.WHITE : BRANDING_COLORS.GREY)};
+  color: ${({ $selected, $focused }) => ($selected ? BRANDING_COLORS.WHITE : $focused ? BRANDING_COLORS.WHITE : BRANDING_COLORS.GREY)};
   padding-bottom: 4px;
   transition: color 0.2s ease;
 
@@ -50,6 +50,17 @@ export const NavbarItemStyle = styled.div<{ $focused: boolean; $selected: boolea
     width: calc(100% + 34px);
     height: ${({ $focused }) => ($focused ? "4px" : "0px")};
     background-color: ${({ $focused }) => ($focused ? `${BRANDING_COLORS.RED}` : `${BRANDING_COLORS.BLACK_TRANSPARENT}`)};
-    transition: background-color 0.2s ease;
+    transition: background-color 0.4s ease;
+    transform: scale(1.02);
+  }
+  &:hover {
+    cursor: pointer;
+    color: ${BRANDING_COLORS.WHITE};
+    transform: scale(1.02);
+
+    &::after {
+      height: 4px;
+      background-color: ${BRANDING_COLORS.RED};
+    }
   }
 `;

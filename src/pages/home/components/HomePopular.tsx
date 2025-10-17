@@ -7,7 +7,7 @@ import { HomePopularContainer } from "../style/Home.styled";
 
 export function HomePopular({ onFocus }: HomeProp) {
   const [dataMedia, setDataMedia] = useState<MediaSection[]>();
-  const { ref, focusSelf, focusKey } = useFocusable({ onFocus });
+  const { ref, focusKey } = useFocusable({ onFocus });
 
   const fetchMoviesSeries = async () => {
     const data = await getPopularMoviesAndSeries();
@@ -27,10 +27,6 @@ export function HomePopular({ onFocus }: HomeProp) {
     },
     [ref]
   );
-
-  useEffect(() => {
-    focusSelf();
-  }, [focusSelf]);
 
   return (
     <FocusContext.Provider value={focusKey}>

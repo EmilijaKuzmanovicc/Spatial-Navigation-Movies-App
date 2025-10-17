@@ -28,6 +28,7 @@ export const ITEMS_NAME = {
   MOVIES: "MOVIES",
   SERIES: "SERIES",
   NAVBAR: "NAVBAR",
+  APP: "APP",
   MEDIA_DETAILS: "MEDIA_DETAILS",
 };
 

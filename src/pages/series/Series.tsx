@@ -2,15 +2,14 @@ import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-naviga
 import { useCallback, useEffect, useState } from "react";
 import { getGenresWithSeries } from "../../api/MovieApi";
 import { MediaContentRow } from "../../components/mediaContentRow/MediaContentRow";
-import type { FocusKeyProps, GenresWithMediaProps, UnifiedMedia } from "../../MovieType";
+import type { GenresWithMediaProps, UnifiedMedia } from "../../MovieType";
 import { DetailPosterPicture, MoviesContainer, MediaShortInformation, MediaListContainer, MediaListScroll, MediaListWraper } from "../movies/style/Movies.styles";
 
-export function Series({ focusKey: focusKeyParam }: FocusKeyProps) {
-  const { ref, focusSelf, focusKey } = useFocusable({
+export function Series() {
+  const { ref, focusKey } = useFocusable({
     focusable: true,
     trackChildren: true,
     autoRestoreFocus: true,
-    focusKey: focusKeyParam,
     onArrowPress: () => true,
   });
 
@@ -41,10 +40,6 @@ export function Series({ focusKey: focusKeyParam }: FocusKeyProps) {
   const onMovieFocus = useCallback((series: UnifiedMedia) => {
     setSelectedSeries(series);
   }, []);
-
-  useEffect(() => {
-    focusSelf();
-  }, [focusSelf]);
 
   return (
     <>

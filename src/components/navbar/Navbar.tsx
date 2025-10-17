@@ -1,63 +1,35 @@
-import { ItemsContainer, NavbarItemStyle, NavbarStyle } from "./style/Logo.styled";
+import { ItemsContainer, NavbarStyle } from "./style/Logo.styled";
 import { Logo } from "./components/Logo";
 import { useState } from "react";
 import { NavbarItems } from "./constants/NavbarItems";
-import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import { ITEMS_NAME, PATHS } from "../../constants/URLs";
-import { useLocation, useNavigate } from "react-router-dom";
+import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
+import { PATHS } from "../../constants/URLs";
+import { useLocation } from "react-router-dom";
+import type { FocusKeyProps } from "../../MovieType";
+import { NavbarItemComponent } from "./components/NavbarItem";
 
-export function Navbar() {
-  const navigate = useNavigate();
+export function Navbar({ focusKey: focusKeyParam }: FocusKeyProps) {
   const location = useLocation();
+  const currentSelected = Object.entries(PATHS).find(([_, path]) => path === location.pathname)?.[0];
+  const [selectedItem, setSelectedItem] = useState<string | undefined>(currentSelected);
 
-  const initialSelected = Object.entries(PATHS).find(([_, path]) => path === location.pathname)?.[0] as string | undefined;
-  const [selectedItem, setSelectedItem] = useState<string>(initialSelected || PATHS.HOME);
+  const { ref, focusKey } = useFocusable({
+    focusable: true,
+    focusKey: focusKeyParam,
+    saveLastFocusedChild: false,
+    preferredChildFocusKey: selectedItem,
+  });
 
-  const [focusedItem, setFocusedItem] = useState<string>();
-  const handleClick = () => {
-    navigate(`/${selectedItem}`);
-  };
   return (
     <NavbarStyle>
       <Logo />
-      <ItemsContainer>
-        {NavbarItems.map((item, index) => {
-          const { ref: itemRef, focused } = useFocusable({
-            focusable: true,
-            trackChildren: true,
-            saveLastFocusedChild: true,
-            autoRestoreFocus: true,
-
-            onEnterPress: () => {
-              switch (item.name) {
-                case ITEMS_NAME.HOME:
-                  navigate(PATHS.HOME);
-                  break;
-                case ITEMS_NAME.MOVIES:
-                  navigate(PATHS.MOVIES);
-                  break;
-                case ITEMS_NAME.SERIES:
-                  navigate(PATHS.SERIES);
-                  break;
-              }
-              setSelectedItem(item.name);
-            },
-            onArrowPress: (direction, event) => {
-              if (direction === "left" && index === 0) return false;
-              if (direction === "right" && index === NavbarItems.length - 1) return false;
-              return true;
-            },
-            onFocus: () => {
-              setFocusedItem(item.name);
-            },
-          });
-          return (
-            <NavbarItemStyle ref={itemRef} key={item.id} $focused={focused ? focusedItem === item.name : false} $selected={selectedItem === item.name} onClick={handleClick}>
-              {item.name}
-            </NavbarItemStyle>
-          );
-        })}
-      </ItemsContainer>
+      <FocusContext.Provider value={focusKey}>
+        <ItemsContainer ref={ref}>
+          {NavbarItems.map((item, index) => (
+            <NavbarItemComponent key={item.id} item={item} index={index} selectedItem={selectedItem} setSelectedItem={setSelectedItem} initialSelected={selectedItem!} />
+          ))}
+        </ItemsContainer>
+      </FocusContext.Provider>
     </NavbarStyle>
   );
 }
