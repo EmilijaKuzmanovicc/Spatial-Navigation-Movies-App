@@ -1,8 +1,9 @@
-import { HomeContainer } from "./style/Home.styled";
-import { HomePopular } from "./components/HomePopular";
 import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import { useCallback } from "react";
+import React from "react";
+import { scrollToElement } from "../../utils";
+import { HomePopular } from "./components/HomePopular";
 import { TopFive } from "./components/TopFive";
+import { HomeContainer } from "./style/Home.styled";
 
 export function Home() {
   const { ref, focusKey } = useFocusable({
@@ -12,17 +13,8 @@ export function Home() {
     autoRestoreFocus: true,
     onArrowPress: () => true,
   });
-  const onRowFocus = useCallback(
-    ({ x }: { x: number }) => {
-      if (ref.current) {
-        ref.current.scrollTo({
-          left: x,
-          behavior: "smooth",
-        });
-      }
-    },
-    [ref]
-  );
+
+  const onRowFocus = React.useCallback((props?: { x?: number; y?: number }) => scrollToElement(ref, props), [ref]);
 
   return (
     <FocusContext.Provider value={focusKey}>

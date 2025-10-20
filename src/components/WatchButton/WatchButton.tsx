@@ -1,11 +1,11 @@
-import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import { URL_IMAGES } from "../../constants/URLs";
-import { WatchButtonStyle } from "./style/WatchButton.styled";
+import { useFocusable, setFocus } from "@noriginmedia/norigin-spatial-navigation";
 import { useEffect } from "react";
-import type { FocusKeyProps } from "../../MovieType";
+import type { FocusKeyProps } from "../../pages/mediaDetails/types/MediaInformationType";
+import { ITEMS_NAME, URL_IMAGES } from "../../utils";
+import { WatchButtonStyle } from "./style/WatchButton.styled";
 
 export function WatchButton({ focusKey: focusKeyParam }: FocusKeyProps) {
-  const { ref, focused, focusSelf } = useFocusable({
+  const { ref, focused } = useFocusable({
     focusKey: focusKeyParam,
     onEnterPress: () => {
       console.log("Playing movie...");
@@ -13,8 +13,9 @@ export function WatchButton({ focusKey: focusKeyParam }: FocusKeyProps) {
   });
 
   useEffect(() => {
-    focusSelf();
-  }, [focusSelf]);
+    setFocus(`${ITEMS_NAME.WATCH_BUTTON}`);
+  }, []);
+
   return (
     <WatchButtonStyle ref={ref} $focused={focused}>
       <img src={URL_IMAGES.PLAY} />

@@ -1,4 +1,4 @@
-import { URL_IMAGES } from "../../../constants/URLs";
+import { URL_IMAGES } from "../../../utils";
 import { LogoContainer, LogoName } from "../style/Logo.styled";
 
 export function Logo() {

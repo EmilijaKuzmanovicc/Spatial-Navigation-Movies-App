@@ -1,13 +1,14 @@
 import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import type { ChannelsProps } from "../Types/HomeTypes";
+import { DIRECTION } from "../../../utils";
 import { ChannelCartContainer, ImageDivStyle } from "../style/Home.styled";
+import type { ChannelsProps } from "../Types/HomeTypes";
 
 export function ChannelCard({ channel, focusKey, onFocus, index }: ChannelsProps & { index: number }) {
   const { ref, focused } = useFocusable({
     focusKey,
     onFocus,
     onArrowPress: (direction) => {
-      return direction === "up" && index === 0 ? false : true;
+      return direction === DIRECTION.UP && index === 0 ? false : true;
     },
   });
 

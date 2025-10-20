@@ -1,4 +1,5 @@
-import type { Genre } from "./MediaInformationType";
+import type { DATA_TYPE } from "../../../utils";
+import type { Genre, UnifiedMedia } from "./MediaInformationType";
 
 export interface Creator {
   id: number;
@@ -18,11 +19,12 @@ export interface Season {
   season_number: number;
 }
 export interface MediaInformation {
-  type: "movie" | "series";
+  type: typeof DATA_TYPE.MOVIE | typeof DATA_TYPE.SERIES;
   id: string;
   adult: boolean;
   title: string;
   overview: string;
+  name?: string;
   poster_path: string | null;
   backdrop_path: string | null;
   release_date?: string;
@@ -45,4 +47,8 @@ export interface MediaInformation {
   revenue?: number;
   runtime?: number | null;
   video?: boolean;
+}
+export interface Series extends Omit<UnifiedMedia, "title"> {
+  type: typeof DATA_TYPE.MOVIE;
+  name: string;
 }

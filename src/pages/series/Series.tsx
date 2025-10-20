@@ -1,11 +1,17 @@
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
-import { useCallback, useEffect, useState } from "react";
-import { getGenresWithSeries } from "../../api/MovieApi";
+import React, { useEffect } from "react";
 import { MediaContentRow } from "../../components/mediaContentRow/MediaContentRow";
-import type { GenresWithMediaProps, UnifiedMedia } from "../../MovieType";
-import { DetailPosterPicture, MoviesContainer, MediaShortInformation, MediaListContainer, MediaListScroll, MediaListWraper } from "../movies/style/Movies.styles";
+import { useGenresWithMedia, DATA_TYPE, useSelectMedia, useMediaNavigation, scrollToElement, useVerticalMouseScroll } from "../../utils";
+import type { GenresWithMediaProps } from "../mediaDetails/types/MediaInformationType";
+import { MediaShortInformation } from "../movies/components/MediaShortInformation";
+import { DetailPosterPicture, MoviesContainer, MediaListContainer, MediaListScroll } from "../movies/style/Movies.styles";
 
 export function Series() {
+  const genresWithSeries: GenresWithMediaProps[] = useGenresWithMedia(DATA_TYPE.SERIES);
+
+  const { selectedMedia: selectedSeries, setSelectedMedia: onSeriesFocus } = useSelectMedia();
+  const { restoreFocus } = useMediaNavigation();
+
   const { ref, focusKey } = useFocusable({
     focusable: true,
     trackChildren: true,
@@ -13,54 +19,32 @@ export function Series() {
     onArrowPress: () => true,
   });
 
-  const [genresWithSeries, setGenresWithSeries] = useState<GenresWithMediaProps[]>([]);
-  const [selectedSeries, setSelectedSeries] = useState<UnifiedMedia | null>(null);
+  const onRowFocus = React.useCallback((props?: { x?: number; y?: number }) => scrollToElement(ref, props), [ref]);
 
-  const fetchMoviesSeries = async () => {
-    const listgenre = await getGenresWithSeries();
-    setGenresWithSeries(listgenre);
-    const firstMovie = listgenre[0]?.media[0];
-    if (firstMovie) setSelectedSeries(firstMovie);
-  };
-
+  const scrollRef = React.useRef<HTMLDivElement | null>(null);
+  useVerticalMouseScroll(scrollRef);
   useEffect(() => {
-    fetchMoviesSeries();
-  }, []);
-
-  const onRowFocus = useCallback(
-    ({ y }: { y: number }) => {
-      ref.current.scrollTo({
-        top: y,
-        behavior: "smooth",
-      });
-    },
-    [ref]
-  );
-
-  const onMovieFocus = useCallback((series: UnifiedMedia) => {
-    setSelectedSeries(series);
-  }, []);
+    restoreFocus();
+  }, [restoreFocus]);
 
   return (
-    <>
-      <FocusContext.Provider value={focusKey}>
-        <DetailPosterPicture $picture={selectedSeries?.backdrop_path} />
-        <MoviesContainer>
-          <MediaShortInformation>
-            <h1>{selectedSeries?.title}</h1>
-            <h3>{selectedSeries?.overview}</h3>
-          </MediaShortInformation>
-          <MediaListContainer>
-            <MediaListScroll ref={ref}>
-              <MediaListWraper>
-                {genresWithSeries.map((series) => {
-                  return <MediaContentRow sizeH="266px" sizeW="440px" key={series.genre} items={series.media} title={series.genre} onFocus={onRowFocus} onMediaFocus={onMovieFocus} />;
-                })}
-              </MediaListWraper>
-            </MediaListScroll>
-          </MediaListContainer>
-        </MoviesContainer>
-      </FocusContext.Provider>
-    </>
+    <FocusContext.Provider value={focusKey}>
+      {selectedSeries === null ? <></> : <DetailPosterPicture $picture={selectedSeries?.backdrop_path} />}
+      <MoviesContainer>
+        <MediaShortInformation title={selectedSeries === null ? "Select a series" : selectedSeries?.title} overview={selectedSeries === null ? "Details of the selected series will appear here." : selectedSeries.overview === undefined ? "No info of overview" : selectedSeries.overview} />
+        <MediaListContainer>
+          <MediaListScroll
+            ref={(el) => {
+              ref.current = el;
+              scrollRef.current = el;
+            }}
+          >
+            {genresWithSeries.map((series) => {
+              return <MediaContentRow sizeH="266px" sizeW="440px" key={series.genre} items={series.media} title={series.genre} onFocus={onRowFocus} onMediaFocus={onSeriesFocus} />;
+            })}
+          </MediaListScroll>
+        </MediaListContainer>
+      </MoviesContainer>
+    </FocusContext.Provider>
   );
 }

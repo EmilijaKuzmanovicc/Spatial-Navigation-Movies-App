@@ -1,17 +1,18 @@
-import { PATHS, URLS_API } from "../constants/URLs";
-import type { Genre, GenresWithMediaProps, MediaSection, Movie, PaginatedResponse, Series, UnifiedMedia } from "../MovieType";
-import type { ActorsDirectorProps, CreditsResponse } from "../pages/mediaDetails/types/MediaInformationType";
-import type { MediaInformation } from "../pages/mediaDetails/types/SeriesInformationType";
+import type { MediaSection, PaginatedResponse, GenresWithMediaProps, Genre, UnifiedMedia, ActorsDirectorProps, CreditsResponse } from "../pages/mediaDetails/types/MediaInformationType";
+import type { Series, MediaInformation } from "../pages/mediaDetails/types/SeriesInformationType";
+import type { Movie } from "../pages/movies/Types/MovieType";
+import { DATA_TYPE, ITEMS_NAME, URLS_API } from "../utils";
 import { api } from "./Axios";
+
 export const getPopularMoviesAndSeries = async (): Promise<MediaSection[]> => {
   const { data: moviesData } = await api.get<PaginatedResponse<Movie>>(URLS_API.GET_MOVIES);
   const { data: seriesData } = await api.get<PaginatedResponse<Series>>(URLS_API.GET_SERIES);
 
   const dataMedia: MediaSection[] = [
     {
-      name: "MOVIES",
+      name: ITEMS_NAME.MOVIES,
       items: moviesData.results.slice(0, 5).map(({ id, title, poster_path, overview }) => ({
-        type: "movie",
+        type: DATA_TYPE.MOVIE,
         id,
         title,
         poster_path,
@@ -19,9 +20,9 @@ export const getPopularMoviesAndSeries = async (): Promise<MediaSection[]> => {
       })),
     },
     {
-      name: "SERIES",
+      name: ITEMS_NAME.SERIES,
       items: seriesData.results.slice(0, 5).map(({ id, name, poster_path, overview }) => ({
-        type: "series",
+        type: DATA_TYPE.SERIES,
         id,
         title: name,
         poster_path,
@@ -31,81 +32,37 @@ export const getPopularMoviesAndSeries = async (): Promise<MediaSection[]> => {
   ];
   return dataMedia;
 };
-export const getGenresWithMovies = async (): Promise<GenresWithMediaProps[]> => {
+
+export const getGenresWithMedia = async (type: typeof DATA_TYPE.MOVIE | typeof DATA_TYPE.SERIES): Promise<GenresWithMediaProps[]> => {
   try {
-    const { data: genresData } = await api.get<{ genres: Genre[] }>(URLS_API.GET_MOVIE_GENRES_LIST);
+    const isMovie = type === DATA_TYPE.MOVIE;
+
+    const genresUrl = isMovie ? URLS_API.GET_MOVIE_GENRES_LIST : URLS_API.GET_SERIES_GENRES_LIST;
+    const itemsUrl = isMovie ? URLS_API.GET_MOVIES_BY_GENRES : URLS_API.GET_SERIES_BY_GENRES;
+    const detailImagesUrl = isMovie ? URLS_API.MOVIE_DETAIL : URLS_API.SERIES_DETAIL;
+
+    const { data: genresData } = await api.get<{ genres: Genre[] }>(genresUrl);
     const genres: Genre[] = genresData.genres;
 
-    const addedMovieIds = new Set<number>();
+    const addedIds = new Set<number>();
 
-    const moviesByGenre = await Promise.all(
+    const mediaByGenre = await Promise.all(
       genres.map(async (genre: Genre) => {
-        const uniqueMovies: UnifiedMedia[] = [];
+        const uniqueMedia: UnifiedMedia[] = [];
         let page = 1;
 
-        while (uniqueMovies.length < 10) {
-          const { data: moviesData } = await api.get<PaginatedResponse<UnifiedMedia>>(URLS_API.GET_MOVIES_BY_GENRES, {
+        while (uniqueMedia.length < 10) {
+          const { data: mediaData } = await api.get<PaginatedResponse<UnifiedMedia>>(itemsUrl, {
             params: { with_genres: genre.id, page },
           });
 
-          if (!moviesData.results || moviesData.results.length === 0) break;
+          if (!mediaData.results || mediaData.results.length === 0) break;
 
-          for (const movie of moviesData.results) {
-            if (uniqueMovies.length >= 10) break;
-            if (!addedMovieIds.has(movie.id)) {
-              uniqueMovies.push(movie);
-              addedMovieIds.add(movie.id);
-            }
-          }
-
-          page++;
-        }
-
-        return {
-          genre: genre.name,
-          media: uniqueMovies.map(({ id, title, poster_path, overview, backdrop_path }) => ({
-            type: "movie" as const,
-            id,
-            title: title || "Untitled",
-            poster_path,
-            overview,
-            backdrop_path,
-          })),
-        };
-      })
-    );
-
-    return moviesByGenre;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return [];
-  }
-};
-
-export const getGenresWithSeries = async (): Promise<GenresWithMediaProps[]> => {
-  try {
-    const { data: genresData } = await api.get<{ genres: Genre[] }>(URLS_API.GET_SERIES_GENRES_LIST);
-    const genres: Genre[] = genresData.genres;
-
-    const addedSeriesIds = new Set<number>();
-
-    const seriesByGenre = await Promise.all(
-      genres.map(async (genre: Genre) => {
-        const uniqueSeries: UnifiedMedia[] = [];
-        let page = 1;
-
-        while (uniqueSeries.length < 10) {
-          const { data: seriesData } = await api.get<PaginatedResponse<UnifiedMedia>>(URLS_API.GET_SERIES_BY_GENRES, {
-            params: { with_genres: genre.id, page },
-          });
-
-          if (!seriesData.results || seriesData.results.length === 0) break;
-
-          for (const series of seriesData.results) {
-            if (uniqueSeries.length >= 10) break;
-            if (!addedSeriesIds.has(series.id)) {
-              uniqueSeries.push(series);
-              addedSeriesIds.add(series.id);
+          for (const item of mediaData.results) {
+            if (uniqueMedia.length >= 10) break;
+            if (!addedIds.has(item.id)) {
+              uniqueMedia.push(item);
+              addedIds.add(item.id);
             }
           }
 
@@ -113,25 +70,27 @@ export const getGenresWithSeries = async (): Promise<GenresWithMediaProps[]> => 
         }
 
         const mediaWithBackdrop = await Promise.all(
-          uniqueSeries.map(async ({ id, title, name, poster_path, overview, backdrop_path }) => {
-            if (!backdrop_path) {
+          uniqueMedia.map(async ({ id, title, name, poster_path, overview, backdrop_path }) => {
+            let finalBackdrop = backdrop_path;
+
+            if (!finalBackdrop && detailImagesUrl) {
               try {
-                const { data: imagesData } = await api.get<{ backdrops: { file_path: string }[] }>(`${URLS_API.SERIES_DETAIL}/${id}/images`);
+                const { data: imagesData } = await api.get<{ backdrops: { file_path: string }[] }>(`${detailImagesUrl}/${id}${URLS_API.IMAGES}`);
                 if (imagesData.backdrops && imagesData.backdrops.length > 0) {
-                  backdrop_path = imagesData.backdrops[0].file_path;
+                  finalBackdrop = imagesData.backdrops[0].file_path;
                 }
               } catch (error) {
-                console.warn(`Could not fetch images for series ${id}:`, error);
+                console.warn(`Could not fetch images for ${type.toLowerCase()} ${id}:`, error);
               }
             }
 
             return {
-              type: "series" as const,
+              type,
               id,
-              title: title || name || "Untitled",
+              title: title || name || "",
               poster_path,
               overview,
-              backdrop_path,
+              backdrop_path: finalBackdrop,
             };
           })
         );
@@ -143,29 +102,29 @@ export const getGenresWithSeries = async (): Promise<GenresWithMediaProps[]> => 
       })
     );
 
-    return seriesByGenre;
+    return mediaByGenre;
   } catch (error) {
-    console.error("Error fetching series by genre:", error);
+    console.error(`Error fetching ${type.toLowerCase()} by genre:`, error);
     return [];
   }
 };
 
-export const getDetails = async (id: string, type: "movie" | "series"): Promise<MediaInformation> => {
-  const endpoint = type === PATHS.MOVIE_TYPE ? `${URLS_API.MOVIE_DETAIL}/${id}` : `${URLS_API.SERIES_DETAIL}/${id}`;
+export const getDetails = async (id: string, type: typeof DATA_TYPE.MOVIE | typeof DATA_TYPE.SERIES): Promise<MediaInformation> => {
+  const endpoint = type === DATA_TYPE.MOVIE ? `${URLS_API.MOVIE_DETAIL}/${id}` : `${URLS_API.SERIES_DETAIL}/${id}`;
 
   const { data } = await api.get<MediaInformation>(endpoint);
 
   const parsedData: MediaInformation = {
     ...data,
     type,
-    title: data.title || (data as any).name,
-    release_date: data.release_date ?? (data as any).first_air_date,
+    title: data.title || (data as MediaInformation).name || "",
+    release_date: data.release_date ?? (data as MediaInformation).first_air_date,
   };
   return parsedData;
 };
 
-export const getActorsAndDirector = async (id: string, type: "movie" | "series"): Promise<ActorsDirectorProps | null> => {
-  const endpoint = type === "movie" ? `${URLS_API.MOVIE_DETAIL}/${id}${URLS_API.CREDITS}` : `${URLS_API.SERIES_DETAIL}/${id}${URLS_API.CREDITS}`;
+export const getActorsAndDirector = async (id: string, type: typeof DATA_TYPE.MOVIE | typeof DATA_TYPE.SERIES): Promise<ActorsDirectorProps | null> => {
+  const endpoint = type === DATA_TYPE.MOVIE ? `${URLS_API.MOVIE_DETAIL}/${id}${URLS_API.CREDITS}` : `${URLS_API.SERIES_DETAIL}/${id}${URLS_API.CREDITS}`;
   const { data } = await api.get<CreditsResponse>(endpoint);
   if (!data) return null;
 

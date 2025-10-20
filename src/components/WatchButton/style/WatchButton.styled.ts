@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BRANDING_COLORS } from "../../../constants/Colors";
+import { BRANDING_COLORS } from "../../../utils";
 
 export const WatchButtonStyle = styled.button<{ $focused: boolean }>`
   margin-top: 10px;

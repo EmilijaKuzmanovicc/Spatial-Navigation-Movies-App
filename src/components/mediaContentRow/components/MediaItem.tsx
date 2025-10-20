@@ -1,21 +1,23 @@
 import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import type { MediaItemProp } from "../../../MovieType";
 import { MediaCart, MediaItemBox, TitleStyle } from "../style/MediaContent.styled";
-import { useNavigate } from "react-router-dom";
+import type { MediaItemProp } from "../../../pages/mediaDetails/types/MediaInformationType";
+import { useMediaNavigation } from "../../../utils";
 
 export function MediaItem({ sizeH, sizeW, type, focusKey, onFocus, title, poster_path, id }: MediaItemProp) {
-  const navigate = useNavigate();
+  const { navigateToMedia } = useMediaNavigation(`/${type}/${id}`, id.toString(), focusKey);
+
   const { ref, focused } = useFocusable({
     focusKey,
     onFocus,
-
     onEnterPress: () => {
-      navigate(`/${type}/${id}`);
+      navigateToMedia();
     },
   });
+
   const handleClick = () => {
-    navigate(`/${type}/${id}`);
+    navigateToMedia();
   };
+
   return (
     <MediaCart $sizeW={sizeW} ref={ref} onClick={handleClick}>
       <MediaItemBox $focused={focused} $poster_path={poster_path} $sizeW={sizeW} $sizeH={sizeH}></MediaItemBox>

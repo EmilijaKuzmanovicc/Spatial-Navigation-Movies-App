@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import { ITEMS_NAME, PATHS } from "../constants/URLs";
 import App from "../App";
 import { Home } from "../pages/home/Home";
+import { MediaDetails } from "../pages/mediaDetails/MediaDetails";
 import { Movies } from "../pages/movies/Movies";
 import { Series } from "../pages/series/Series";
-import { MediaDetails } from "../pages/mediaDetails/MediaDetails";
+import { PATHS, ITEMS_NAME } from "../utils";
 
 export const Router = createBrowserRouter([
   {

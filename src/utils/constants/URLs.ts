@@ -21,20 +21,10 @@ export const URLS_API = {
   GET_MOVIES_BY_GENRES: `/discover/movie`,
   GET_SERIES_GENRES_LIST: `/genre/tv/list`,
   GET_SERIES_BY_GENRES: `discover/tv`,
+  IMAGES: `/images`,
 } as const;
 
-export const ITEMS_NAME = {
-  HOME: "HOME",
-  MOVIES: "MOVIES",
-  SERIES: "SERIES",
-  NAVBAR: "NAVBAR",
-  APP: "APP",
-  MEDIA_DETAILS: "MEDIA_DETAILS",
-};
-
 export const PATHS = {
-  MOVIE_TYPE: "movie",
-  SERIES_TYPE: "series",
   HOME: `/`,
   MOVIES: `/movies`,
   SERIES: `/series`,

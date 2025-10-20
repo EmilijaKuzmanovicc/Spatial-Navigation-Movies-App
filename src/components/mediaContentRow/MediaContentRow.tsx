@@ -1,7 +1,9 @@
-import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import * as React from "react";
-import type { MediaProps, UnifiedMedia } from "../../MovieType";
+import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
+import React from "react";
+import type { MediaProps, UnifiedMedia } from "../../pages/mediaDetails/types/MediaInformationType";
+import { scrollToElement } from "../../utils";
 import { MediaItem } from "./components/MediaItem";
+import { useMouseEdgeScroll } from "./hooks/useMouseEdgeScroll";
 import { MediaContainer, MediaScroll, MediaWrapper } from "./style/MediaContent.styled";
 
 export function MediaContentRow({ sizeH, sizeW, items, title, onFocus, onMediaFocus }: MediaProps<UnifiedMedia>) {
@@ -13,16 +15,10 @@ export function MediaContentRow({ sizeH, sizeW, items, title, onFocus, onMediaFo
 
   const scrollRef = React.useRef<HTMLDivElement | null>(null);
 
-  const onMediaFocusScroll = React.useCallback(
-    ({ x }: { x: number }) => {
-      if (!scrollRef.current) return;
-      scrollRef.current.scrollTo({
-        left: x,
-        behavior: "smooth",
-      });
-    },
-    [scrollRef]
-  );
+  const onRowFocus = React.useCallback((props?: { x?: number; y?: number }) => scrollToElement(scrollRef, props), [scrollRef]);
+
+  useMouseEdgeScroll(scrollRef);
+
   return (
     <FocusContext.Provider value={focusKey}>
       <MediaContainer ref={ref}>
@@ -37,13 +33,13 @@ export function MediaContentRow({ sizeH, sizeW, items, title, onFocus, onMediaFo
                 id={media.id}
                 key={`${media.type}-${media.title}-${media.id}`}
                 title={media.title}
-                poster_path={sizeW === "440px" ? (media.backdrop_path ? media.backdrop_path : "") : media.poster_path ? media.poster_path : ""}
-                overview={media.overview ? media.overview : ""}
+                poster_path={sizeW === "440px" ? media.backdrop_path || "" : media.poster_path || ""}
+                overview={media.overview || ""}
                 focusKey={`${media.title}-${media.id}`}
                 onFocus={(layout) => {
                   if (scrollRef.current) {
                     const scrollX = layout.x - scrollRef.current.clientWidth / 2 + layout.width / 2;
-                    onMediaFocusScroll({ x: scrollX });
+                    onRowFocus({ x: scrollX });
                   }
                   onMediaFocus?.(media);
                 }}

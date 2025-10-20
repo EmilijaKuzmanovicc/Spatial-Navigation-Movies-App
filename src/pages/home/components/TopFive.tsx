@@ -1,5 +1,5 @@
-import { popularChannels } from "../../../constants/Chanels";
-import type { HomeProp } from "../../../MovieType";
+import { scrollToElement, popularChannels } from "../../../utils";
+import type { HomeProp } from "../../movies/Types/MovieType";
 import { TopFiveContainer } from "../style/Home.styled";
 import ChannelCard from "./ChannelCard";
 import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
@@ -13,24 +13,16 @@ export function TopFive({ onFocus }: HomeProp) {
     saveLastFocusedChild: true,
     autoRestoreFocus: true,
   });
-  const scrollRef = React.useRef<HTMLDivElement | null>(null);
+  const scrollRef = React.useRef<HTMLElement | null>(null);
 
-  const onChannelFocus = React.useCallback(
-    ({ y }: { y: number }) => {
-      return scrollRef.current?.scrollTo({
-        top: y,
-        behavior: "smooth",
-      });
-    },
-    [scrollRef]
-  );
+  const onRowFocus = React.useCallback((props?: { x?: number; y?: number }) => scrollToElement(scrollRef, props), [scrollRef]);
 
   return (
     <FocusContext.Provider value={focusKey}>
       <TopFiveContainer ref={ref}>
         <h2>Top 5 Channels</h2>
         {popularChannels.map((item, index) => (
-          <ChannelCard index={index} key={item.name} channel={item} focusKey={item.name} onFocus={onChannelFocus} />
+          <ChannelCard index={index} key={item.name} channel={item} focusKey={item.name} onFocus={onRowFocus} />
         ))}
       </TopFiveContainer>
     </FocusContext.Provider>

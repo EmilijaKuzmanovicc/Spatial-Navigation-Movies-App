@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { NavbarItemStyle } from "../style/Logo.styled";
 import { setFocus, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useNavigate } from "react-router-dom";
+import { ITEMS_NAME, PATHS } from "../../../utils";
+import { useEffect } from "react";
 import type { NavbarItemComponentProps } from "../NavbarType";
-import { ITEMS_NAME, PATHS } from "../../../constants/URLs";
+import { NavbarItemStyle } from "../style/Logo.styled";
 
 export function NavbarItemComponent({ item, selectedItem, setSelectedItem, initialSelected }: NavbarItemComponentProps) {
   const navigate = useNavigate();

@@ -1,25 +1,21 @@
 import styled from "styled-components";
-import { BRANDING_COLORS } from "../../../constants/Colors";
+import { BRANDING_COLORS } from "../../../utils";
 
 export const MediaListContainer = styled.div`
   width: 100%;
   height: 555px;
   display: flex;
   flex-direction: column;
-  overflow-y: hidden;
+  overflow-y: auto;
 `;
 
-export const MediaListWraper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 export const MediaListScroll = styled.div`
-  overflow-y: hidden;
+  overflow: auto;
   flex-shrink: 1;
   -ms-overflow-style: none;
-  scrollbar-width: none;
+
   animation: fadeIn 0.5s ease;
-  overflow-x: auto;
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -32,7 +28,7 @@ export const MediaListScroll = styled.div`
   }
 `;
 
-export const MediaShortInformation = styled.div`
+export const MediaShortInformationStyle = styled.div`
   height: 400px;
   width: 100%;
   padding-left: 70px;

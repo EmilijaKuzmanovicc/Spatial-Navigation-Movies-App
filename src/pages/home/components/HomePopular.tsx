@@ -1,13 +1,18 @@
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { getPopularMoviesAndSeries } from "../../../api/MovieApi";
 import { MediaContentRow } from "../../../components/mediaContentRow/MediaContentRow";
-import type { HomeProp, MediaSection } from "../../../MovieType";
 import { HomePopularContainer } from "../style/Home.styled";
+import type { HomeProp } from "../../movies/Types/MovieType";
+import type { MediaSection } from "../../mediaDetails/types/MediaInformationType";
+import React from "react";
+import { scrollToElement, useMediaNavigation } from "../../../utils";
 
 export function HomePopular({ onFocus }: HomeProp) {
   const [dataMedia, setDataMedia] = useState<MediaSection[]>();
   const { ref, focusKey } = useFocusable({ onFocus });
+  const { restoreFocus } = useMediaNavigation();
+  const onRowFocus = React.useCallback((props?: { x?: number; y?: number }) => scrollToElement(ref, props), [ref]);
 
   const fetchMoviesSeries = async () => {
     const data = await getPopularMoviesAndSeries();
@@ -18,15 +23,9 @@ export function HomePopular({ onFocus }: HomeProp) {
     fetchMoviesSeries();
   }, []);
 
-  const onRowFocus = useCallback(
-    ({ y }: { y: number }) => {
-      ref.current.scrollTo({
-        top: y,
-        behavior: "smooth",
-      });
-    },
-    [ref]
-  );
+  useEffect(() => {
+    restoreFocus();
+  }, [restoreFocus]);
 
   return (
     <FocusContext.Provider value={focusKey}>

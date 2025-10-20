@@ -6,7 +6,7 @@ export function GenreInformations({ genres }: GenreProps) {
     <GenreStyle>
       {genres.map((genre, index) => (
         <TextMovieStyle key={genre.name}>
-          {index === 0 ? "" : ","} {genre.name}
+          {index === 0 ? "" : ", "} {genre.name}
         </TextMovieStyle>
       ))}
     </GenreStyle>

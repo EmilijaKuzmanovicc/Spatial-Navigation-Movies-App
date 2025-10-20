@@ -1,7 +1,5 @@
 import styled, { css } from "styled-components";
-import { pop } from "../../../constants/Pop";
-import { BRANDING_COLORS } from "../../../constants/Colors";
-import { URL_IMAGES } from "../../../constants/URLs";
+import { BRANDING_COLORS, pop, URL_IMAGES } from "../../../utils";
 
 export const MediaContainer = styled.div`
   width: 100%;
@@ -26,12 +24,17 @@ const focusedStyles = css`
   animation: ${pop} 0.3s ease-out;
   cursor: pointer;
 `;
-export const MediaItemBox = styled.div<{
-  $focused: boolean;
+export const MediaItemBox = styled.div.attrs<{
   $poster_path: string;
   $sizeH: string;
   $sizeW: string;
-}>`
+}>(({ $poster_path, $sizeH, $sizeW }) => ({
+  style: {
+    height: $sizeH,
+    width: $sizeW,
+    backgroundImage: $poster_path.startsWith("/") ? `url(${import.meta.env.VITE_TMDB_IMAGE_URL}${$poster_path})` : `url(${URL_IMAGES.IMAGE_NOT_FOUND})`,
+  },
+}))<{ $focused: boolean }>`
   margin: 10px;
   padding: 10px;
   background-size: cover;
@@ -41,15 +44,10 @@ export const MediaItemBox = styled.div<{
   flex-shrink: 0;
   box-sizing: border-box;
   display: flex;
-  height: ${({ $sizeH }) => $sizeH};
-  width: ${({ $sizeW }) => $sizeW};
-  background-image: ${({ $poster_path }) => {
-    const isLocal = $poster_path.startsWith("/");
-    return isLocal ? `url(${import.meta.env.VITE_TMDB_IMAGE_URL}${$poster_path})` : `url(${URL_IMAGES.IMAGE_NOT_FOUND})`;
-  }};
+  background-color: ${BRANDING_COLORS.GREY};
   transition: all 0.25s ease-in-out;
-
-  ${({ $focused }) => $focused && focusedStyles}
+  border-width: ${({ $focused }) => ($focused ? "6px" : "0px")};
+  ${({ $focused }) => $focused && focusedStyles};
 
   &:hover {
     ${focusedStyles}
@@ -73,6 +71,15 @@ export const MediaScroll = styled.div`
   scrollbar-width: none;
   animation: fadeIn 0.5s ease;
   padding-right: 200px;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+  }
   @keyframes fadeIn {
     from {
       opacity: 0;

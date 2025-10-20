@@ -1,26 +1,26 @@
 import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import { useNavigate, useParams } from "react-router-dom";
-import { BackButton, MediaDetailContainer } from "./style/MediaDetails.styled";
-import { URL_IMAGES } from "../../constants/URLs";
-import type { FocusKeyProps } from "../../MovieType";
-import { MediaDescription } from "./components/MediaDescription";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { DATA_TYPE, useMediaNavigation, URL_IMAGES } from "../../utils";
 import { DetailPosterPicture } from "../movies/style/Movies.styles";
+import { MediaDescription } from "./components/MediaDescription";
+import { BackButton, MediaDetailContainer } from "./style/MediaDetails.styled";
+import type { FocusKeyProps } from "./types/MediaInformationType";
 
 export function MediaDetails({ focusKey: focusKeyParam }: FocusKeyProps) {
-  const { id, type } = useParams<{ id: string; type: "movie" | "series" }>();
-  const navigate = useNavigate();
+  const { id, type } = useParams<{ id: string; type: typeof DATA_TYPE.MOVIE | typeof DATA_TYPE.SERIES }>();
   const [backdrop, setBackdrop] = useState<string | null>(null);
+  const { navigateBack } = useMediaNavigation();
 
   const { ref, focused } = useFocusable({
     focusKey: focusKeyParam,
     onEnterPress: () => {
-      navigate(-1);
+      navigateBack();
     },
   });
 
   const goBackOnClick = () => {
-    navigate(-1);
+    navigateBack();
   };
 
   if (id === undefined || type === undefined) return;

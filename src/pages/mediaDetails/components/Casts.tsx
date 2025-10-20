@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { ActorsDirectorProps, MediaInformationProps } from "../types/MediaInformationType";
 import { getActorsAndDirector } from "../../../api/MovieApi";
+import { DATA_TYPE } from "../../../utils";
 
 export function Casts({ media, type }: MediaInformationProps) {
   const [movieDirector, setMovieDirector] = useState<string | undefined>();
@@ -11,13 +12,15 @@ export function Casts({ media, type }: MediaInformationProps) {
     setMovieDirector(crew?.director);
     setMovieCast(crew?.actors);
   };
+
   useEffect(() => {
     fetchData();
   }, []);
+
   return (
     <>
       <h5>
-        {media.type === "movie" ? (
+        {media.type === DATA_TYPE.MOVIE ? (
           <>
             <strong>Director:</strong> {movieDirector || "No info for director"}
           </>
@@ -28,8 +31,8 @@ export function Casts({ media, type }: MediaInformationProps) {
         )}
       </h5>
 
-      <h5>
-        <strong>Cast:</strong> {movieCast?.length ? movieCast.join(", ") : "No info for cast"}
+      <h5 style={{ height: "66px" }}>
+        <strong>Cast:</strong> {movieCast!.join(", ")}
       </h5>
     </>
   );
