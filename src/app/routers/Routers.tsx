@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
-import { Home } from "../pages/home/Home";
-import { MediaDetails } from "../pages/mediaDetails/MediaDetails";
-import { Movies } from "../pages/movies/Movies";
-import { Series } from "../pages/series/Series";
-import { PATHS, ITEMS_NAME } from "../utils";
+import { Home } from "../../pages/home";
+import { MediaDetails } from "../../pages/mediaDetails";
+import { PATHS, ITEMS_NAME } from "../../utils";
+import { App } from "..";
+import { Movies } from "../../pages/movies/Movies";
+import { Series } from "../../pages/series/Series";
 
 export const Router = createBrowserRouter([
   {
@@ -18,10 +18,12 @@ export const Router = createBrowserRouter([
       {
         path: PATHS.MOVIES,
         element: <Movies />,
+        // element: <Media type={DATA_TYPE.MOVIE} />,
       },
       {
         path: PATHS.SERIES,
         element: <Series />,
+        //element: <Media type={DATA_TYPE.SERIES} />,
       },
     ],
   },

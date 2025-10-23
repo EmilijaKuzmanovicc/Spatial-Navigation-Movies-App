@@ -1,6 +1,5 @@
+import type { Genre, UnifiedMedia } from "..";
 import type { DATA_TYPE } from "../../../utils";
-import type { Genre, UnifiedMedia } from "./MediaInformationType";
-
 export interface Creator {
   id: number;
   credit_id: string;

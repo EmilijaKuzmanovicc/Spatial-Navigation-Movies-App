@@ -6,6 +6,7 @@ export const WatchButtonStyle = styled.button<{ $focused: boolean }>`
   margin-bottom: 10px;
   width: 286px;
   height: 78px;
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -15,6 +16,9 @@ export const WatchButtonStyle = styled.button<{ $focused: boolean }>`
   color: ${BRANDING_COLORS.WHITE};
   font-size: 20px;
   font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+
   img {
     width: 15px;
     height: 17px;

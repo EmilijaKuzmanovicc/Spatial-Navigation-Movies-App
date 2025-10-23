@@ -1,5 +1,5 @@
 import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import { DIRECTION } from "../../../utils";
+import { DIRECTION, hoverToFocus } from "../../../utils";
 import { ChannelCartContainer, ImageDivStyle } from "../style/Home.styled";
 import type { ChannelsProps } from "../Types/HomeTypes";
 
@@ -11,10 +11,10 @@ export function ChannelCard({ channel, focusKey, onFocus, index }: ChannelsProps
       return direction === DIRECTION.UP && index === 0 ? false : true;
     },
   });
-
+  const handleMouseEnter = hoverToFocus(focusKey, () => focused);
   return (
     <div ref={ref}>
-      <ChannelCartContainer $focused={focused}>
+      <ChannelCartContainer $focused={focused} onMouseEnter={handleMouseEnter}>
         <ImageDivStyle>
           <img src={channel.image} alt={channel.name} />
         </ImageDivStyle>

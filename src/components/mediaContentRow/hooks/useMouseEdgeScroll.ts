@@ -1,23 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, type RefObject } from "react";
 
-export function useMouseEdgeScroll(scrollRef: React.RefObject<HTMLDivElement | null>, speed = 6, threshold = 50) {
+export function useMouseEdgeScroll(scrollRef: RefObject<HTMLDivElement | null>, speed = 8, threshold = 150) {
   useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
+    const container = scrollRef.current;
+    if (!container) return;
 
     let scrollDirection = 0;
     let animationFrame: number | null = null;
 
     const scrollStep = () => {
-      if (!scrollContainer) return;
+      if (!container) return;
+
       if (scrollDirection !== 0) {
-        scrollContainer.scrollLeft += scrollDirection * speed;
-        animationFrame = requestAnimationFrame(scrollStep);
+        const maxScrollLeft = container.scrollWidth - container.clientWidth;
+
+        if ((scrollDirection === -1 && container.scrollLeft > 0) || (scrollDirection === 1 && container.scrollLeft < maxScrollLeft)) {
+          container.scrollLeft += scrollDirection * speed;
+        }
       }
+
+      animationFrame = requestAnimationFrame(scrollStep);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = scrollContainer.getBoundingClientRect();
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
+
       if (e.clientX < rect.left + threshold) {
         scrollDirection = -1;
         if (!animationFrame) animationFrame = requestAnimationFrame(scrollStep);
@@ -26,27 +34,19 @@ export function useMouseEdgeScroll(scrollRef: React.RefObject<HTMLDivElement | n
         if (!animationFrame) animationFrame = requestAnimationFrame(scrollStep);
       } else {
         scrollDirection = 0;
-        if (animationFrame) {
-          cancelAnimationFrame(animationFrame);
-          animationFrame = null;
-        }
       }
     };
 
     const handleMouseLeave = () => {
       scrollDirection = 0;
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-        animationFrame = null;
-      }
     };
 
-    scrollContainer.addEventListener("mousemove", handleMouseMove);
-    scrollContainer.addEventListener("mouseleave", handleMouseLeave);
+    container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
-      scrollContainer.removeEventListener("mousemove", handleMouseMove);
-      scrollContainer.removeEventListener("mouseleave", handleMouseLeave);
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseleave", handleMouseLeave);
       if (animationFrame) cancelAnimationFrame(animationFrame);
     };
   }, [scrollRef, speed, threshold]);

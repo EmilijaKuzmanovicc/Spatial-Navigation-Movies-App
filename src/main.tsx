@@ -1,8 +1,10 @@
 import { createRoot } from "react-dom/client";
-import { GlobalStyle, GlobalStyleDiv } from "./style/App.styled.ts";
 import { RouterProvider } from "react-router-dom";
-import { Router } from "./routers/Routers.tsx";
-import "./SpatialNavigation.ts";
+import { initializeSpatialNavigation } from "./app/spatialNavigation/SpatialNavigation";
+import { GlobalStyle, GlobalStyleDiv } from "./app/style/App.styled";
+import { Router } from "./app/routers/Routers";
+
+initializeSpatialNavigation();
 
 createRoot(document.getElementById("root")!).render(
   <>

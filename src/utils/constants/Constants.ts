@@ -1,3 +1,5 @@
+import { PATHS } from "./URLs";
+
 export const DATA_TYPE = {
   MOVIE: "movie",
   SERIES: "series",
@@ -27,3 +29,9 @@ export const CONTENT_RATING = {
   R: "R",
   NC_17: "NC-17",
 } as const;
+
+export const PATH_MAP = {
+  [ITEMS_NAME.HOME]: PATHS.HOME,
+  [ITEMS_NAME.MOVIES]: PATHS.MOVIES,
+  [ITEMS_NAME.SERIES]: PATHS.SERIES,
+};

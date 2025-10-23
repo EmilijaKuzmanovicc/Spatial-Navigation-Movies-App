@@ -3,7 +3,7 @@ import { getGenresWithMedia } from "../../api/MovieApi";
 import type { GenresWithMediaProps } from "../../pages/mediaDetails/types/MediaInformationType";
 import type { DATA_TYPE } from "../constants/Constants";
 
-export const useGenresWithMedia = (type: typeof DATA_TYPE.MOVIE | typeof DATA_TYPE.SERIES) => {
+export const useMediaWithGenres = (type: typeof DATA_TYPE.MOVIE | typeof DATA_TYPE.SERIES) => {
   const [genresWithMedia, setGenresWithMedia] = useState<GenresWithMediaProps[]>([]);
 
   const fetchGenres = async () => {

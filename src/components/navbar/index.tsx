@@ -1,12 +1,12 @@
-import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
-import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import type { FocusKeyProps } from "../../pages/mediaDetails/types/MediaInformationType";
 import { PATHS } from "../../utils";
+import { useState } from "react";
+import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
+import { ItemsContainer, NavbarStyle } from "./style/Logo.styled";
 import { Logo } from "./components/Logo";
 import { NavbarItemComponent } from "./components/NavbarItem";
 import { NavbarItems } from "./constants/NavbarItems";
-import { ItemsContainer, NavbarStyle } from "./style/Logo.styled";
 
 export function Navbar({ focusKey: focusKeyParam }: FocusKeyProps) {
   const location = useLocation();

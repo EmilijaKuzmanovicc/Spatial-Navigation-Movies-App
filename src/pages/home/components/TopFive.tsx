@@ -3,7 +3,7 @@ import type { HomeProp } from "../../movies/Types/MovieType";
 import { TopFiveContainer } from "../style/Home.styled";
 import ChannelCard from "./ChannelCard";
 import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import React from "react";
+import { useCallback, useRef } from "react";
 
 export function TopFive({ onFocus }: HomeProp) {
   const { ref, focusKey } = useFocusable({
@@ -13,9 +13,9 @@ export function TopFive({ onFocus }: HomeProp) {
     saveLastFocusedChild: true,
     autoRestoreFocus: true,
   });
-  const scrollRef = React.useRef<HTMLElement | null>(null);
+  const scrollRef = useRef<HTMLElement | null>(null);
 
-  const onRowFocus = React.useCallback((props?: { x?: number; y?: number }) => scrollToElement(scrollRef, props), [scrollRef]);
+  const onRowFocus = useCallback((props?: { x?: number; y?: number }) => scrollToElement(scrollRef, props), [scrollRef]);
 
   return (
     <FocusContext.Provider value={focusKey}>

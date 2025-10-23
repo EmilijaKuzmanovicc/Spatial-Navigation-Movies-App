@@ -1,4 +1,4 @@
-import { WatchButton } from "../../../components/WatchButton/WatchButton";
+import { WatchButton } from "../../../components/WatchButton";
 import { ITEMS_NAME } from "../../../utils";
 import { BodyInformationsStyle } from "../style/MediaDetails.styled";
 import type { MediaInformationProps } from "../types/MediaInformationType";

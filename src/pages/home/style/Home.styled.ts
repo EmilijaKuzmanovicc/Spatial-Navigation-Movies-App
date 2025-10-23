@@ -40,11 +40,11 @@ export const ChannelCartContainer = styled.div<{ $focused: boolean }>`
   text-align: center;
   align-items: center;
   justify-content: center;
-  border-color: #ff0000;
+  border-color: ${BRANDING_COLORS.RED};
   border-style: solid;
   border-width: ${({ $focused }) => ($focused ? "4px" : 0)};
   box-sizing: border-box;
-
+  cursor: pointer;
   img {
     padding: 10px;
     height: auto;
@@ -55,11 +55,6 @@ export const ChannelCartContainer = styled.div<{ $focused: boolean }>`
     font-size: 16px;
     font-weight: 400;
     color: ${({ $focused }) => ($focused ? `${BRANDING_COLORS.WHITE}` : `${BRANDING_COLORS.LIGHTER_GREY}`)};
-  }
-
-  &:hover {
-    border-color: #ff0000;
-    border-width: 4px;
   }
 `;
 

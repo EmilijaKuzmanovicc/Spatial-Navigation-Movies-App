@@ -1,4 +1,5 @@
 import type { FocusableComponentLayout, FocusDetails } from "@noriginmedia/norigin-spatial-navigation";
+import type { Dispatch, SetStateAction } from "react";
 
 export interface ChannelsProps {
   channel: ChannelsType;
@@ -18,6 +19,6 @@ export interface ChannelItemProp {
   onFocus: (layout: FocusableComponentLayout, props: object, details: FocusDetails) => void;
 }
 export type NavbarProps = {
-  onSelect: React.Dispatch<React.SetStateAction<string>>;
+  onSelect: Dispatch<SetStateAction<string>>;
   activeItem: string;
 };

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { getDetails } from "../../../api/MovieApi";
 import type { MovieDetailsProp } from "../types/MediaInformationType";
+import type { MediaInformation } from "../types/SeriesInformationType";
 import { MediaDetailsStyle, MediaInformationBody, PosterPath } from "../style/MediaDetails.styled";
 import { BodyInformations } from "./BodyInformations";
-import type { MediaInformation } from "../types/SeriesInformationType";
 import { MediaInformationHeader } from "./MediaInfomationsHeader";
-import { getDetails } from "../../../api/MovieApi";
 
 export function MediaDescription({ id, type, setBackdrop }: MovieDetailsProp) {
   const [movieInfomations, setMovieInfomations] = useState<MediaInformation>();

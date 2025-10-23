@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, type RefObject } from "react";
 
-export function useVerticalMouseScroll(scrollRef: React.RefObject<HTMLDivElement | null>, speed = 6, threshold = 50) {
+export function useVerticalMouseScroll(scrollRef: RefObject<HTMLDivElement | null>, speed = 6, threshold = 50) {
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;

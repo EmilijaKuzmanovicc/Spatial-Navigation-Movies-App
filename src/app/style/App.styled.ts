@@ -1,6 +1,5 @@
 import styled, { createGlobalStyle } from "styled-components";
-import { BRANDING_COLORS } from "../utils/constants/Colors";
-import { URL_IMAGES } from "../utils/constants/URLs";
+import { BRANDING_COLORS, URL_IMAGES } from "../../utils";
 
 export const GlobalStyle = createGlobalStyle`
 * {

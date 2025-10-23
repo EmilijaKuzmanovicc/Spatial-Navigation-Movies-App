@@ -1,13 +1,13 @@
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 import React, { useEffect } from "react";
-import { MediaContentRow } from "../../components/mediaContentRow/MediaContentRow";
-import { useGenresWithMedia, DATA_TYPE, useSelectMedia, useMediaNavigation, scrollToElement, useVerticalMouseScroll } from "../../utils";
+import { DATA_TYPE, useSelectMedia, useMediaNavigation, scrollToElement, useVerticalMouseScroll, useMediaWithGenres } from "../../utils";
 import type { GenresWithMediaProps } from "../mediaDetails/types/MediaInformationType";
 import { MediaShortInformation } from "./components/MediaShortInformation";
 import { DetailPosterPicture, MoviesContainer, MediaListContainer, MediaListScroll } from "./style/Movies.styles";
+import { MediaContentRow } from "../../components/mediaContentRow";
 
 export function Movies() {
-  const genresWithMovies: GenresWithMediaProps[] = useGenresWithMedia(DATA_TYPE.MOVIE);
+  const genresWithMovies: GenresWithMediaProps[] = useMediaWithGenres(DATA_TYPE.MOVIE);
   const { selectedMedia: selectedMovie, setSelectedMedia: onMovieFocus } = useSelectMedia();
   const { restoreFocus } = useMediaNavigation();
 

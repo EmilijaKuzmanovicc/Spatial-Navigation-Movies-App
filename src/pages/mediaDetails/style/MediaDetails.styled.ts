@@ -107,3 +107,57 @@ export const HeaderInformations = styled.div`
   font-style: normal;
   line-height: 29px;
 `;
+export const MediaListContainer = styled.div`
+  width: 100%;
+  height: 555px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+`;
+
+export const MediaListScroll = styled.div`
+  overflow: auto;
+  flex-shrink: 1;
+  -ms-overflow-style: none;
+
+  animation: fadeIn 0.5s ease;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+export const MediaShortInformationStyle = styled.div`
+  height: 400px;
+  width: 100%;
+  padding-left: 70px;
+  color: ${BRANDING_COLORS.WHITE};
+  font-weight: 600;
+  font-style: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  text-align: start;
+  h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  h3 {
+    height: 170px;
+    font-size: 22px;
+    width: 700px;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`;

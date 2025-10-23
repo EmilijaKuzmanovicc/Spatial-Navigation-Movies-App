@@ -13,7 +13,6 @@ export const useMediaNavigation = (url?: string, id?: string, focusKey?: string)
       },
     });
   };
-
   const navigateBack = () => {
     navigate(location.state?.from, {
       state: {

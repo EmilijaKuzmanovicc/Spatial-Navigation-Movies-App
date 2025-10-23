@@ -48,10 +48,6 @@ export const MediaItemBox = styled.div.attrs<{
   transition: all 0.25s ease-in-out;
   border-width: ${({ $focused }) => ($focused ? "6px" : "0px")};
   ${({ $focused }) => $focused && focusedStyles};
-
-  &:hover {
-    ${focusedStyles}
-  }
 `;
 
 export const MediaWrapper = styled.div`
@@ -76,10 +72,6 @@ export const MediaScroll = styled.div`
     height: 8px;
   }
 
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-  }
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -110,12 +102,4 @@ export const TitleStyle = styled.div<{ $focused: boolean; $sizeW: string }>`
   overflow: hidden;
   text-overflow: ellipsis;
   color: ${({ $focused }) => ($focused ? `${BRANDING_COLORS.WHITE}` : `${BRANDING_COLORS.GREY}`)};
-`;
-
-export const RowCard = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
 `;

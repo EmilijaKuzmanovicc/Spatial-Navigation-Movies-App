@@ -1,27 +1,18 @@
-import { setFocus, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import { useNavigate } from "react-router-dom";
-import { ITEMS_NAME, PATHS } from "../../../utils";
+import { useFocusable, setFocus } from "@noriginmedia/norigin-spatial-navigation";
 import { useEffect } from "react";
-import type { NavbarItemComponentProps } from "../NavbarType";
+import { useNavigate } from "react-router-dom";
+import { PATH_MAP, hoverToFocus } from "../../../utils";
+import type { NavbarItemComponentProps } from "../types/NavbarType";
 import { NavbarItemStyle } from "../style/Logo.styled";
 
 export function NavbarItemComponent({ item, selectedItem, setSelectedItem, initialSelected }: NavbarItemComponentProps) {
   const navigate = useNavigate();
-  const { ref, focusSelf, focused } = useFocusable({
+  const { ref, focusSelf, focused, focusKey } = useFocusable({
     focusable: true,
     focusKey: item.name,
     onEnterPress: () => {
-      switch (item.name) {
-        case ITEMS_NAME.HOME:
-          navigate(PATHS.HOME);
-          break;
-        case ITEMS_NAME.MOVIES:
-          navigate(PATHS.MOVIES);
-          break;
-        case ITEMS_NAME.SERIES:
-          navigate(PATHS.SERIES);
-          break;
-      }
+      const path = PATH_MAP[item.name];
+      if (path) navigate(path);
       setSelectedItem(item.name);
     },
   });
@@ -29,6 +20,7 @@ export function NavbarItemComponent({ item, selectedItem, setSelectedItem, initi
   useEffect(() => {
     setFocus(initialSelected);
   }, [initialSelected]);
+  const handleMouseEnter = hoverToFocus(focusKey, () => focused);
 
   return (
     <NavbarItemStyle
@@ -41,6 +33,7 @@ export function NavbarItemComponent({ item, selectedItem, setSelectedItem, initi
         focusSelf();
         navigate(item.path);
       }}
+      onMouseEnter={handleMouseEnter}
     >
       {item.name}
     </NavbarItemStyle>

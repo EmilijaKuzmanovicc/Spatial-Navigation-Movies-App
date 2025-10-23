@@ -1,6 +1,6 @@
+import type { Movie } from "../pages/media/types/MovieType";
 import type { MediaSection, PaginatedResponse, GenresWithMediaProps, Genre, UnifiedMedia, ActorsDirectorProps, CreditsResponse } from "../pages/mediaDetails/types/MediaInformationType";
 import type { Series, MediaInformation } from "../pages/mediaDetails/types/SeriesInformationType";
-import type { Movie } from "../pages/movies/Types/MovieType";
 import { DATA_TYPE, ITEMS_NAME, URLS_API } from "../utils";
 import { api } from "./Axios";
 
@@ -32,7 +32,6 @@ export const getPopularMoviesAndSeries = async (): Promise<MediaSection[]> => {
   ];
   return dataMedia;
 };
-
 export const getGenresWithMedia = async (type: typeof DATA_TYPE.MOVIE | typeof DATA_TYPE.SERIES): Promise<GenresWithMediaProps[]> => {
   try {
     const isMovie = type === DATA_TYPE.MOVIE;
@@ -129,6 +128,6 @@ export const getActorsAndDirector = async (id: string, type: typeof DATA_TYPE.MO
   if (!data) return null;
 
   const actors = data.cast?.length && data.cast.length > 0 ? data.cast.slice(0, 6).map((actor) => actor.name) : ["No actors found"];
-  const director = data.crew?.find((person) => person.job === "Director")?.name || data.crew?.find((person) => person.job === "Series Director")?.name || "Unknown director";
+  const director = data.crew?.find((person) => person.job === "Director")?.name || "Unknown director";
   return { actors, director };
 };

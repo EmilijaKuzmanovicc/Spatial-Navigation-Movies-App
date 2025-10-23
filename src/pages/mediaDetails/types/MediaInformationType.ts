@@ -1,18 +1,15 @@
 import type { FocusableComponentLayout, FocusDetails } from "@noriginmedia/norigin-spatial-navigation";
-import type { DATA_TYPE } from "../../../utils/constants/Constants";
+import type { DATA_TYPE } from "../../../utils";
 import type { MediaInformation } from "./SeriesInformationType";
-
 export interface MovieDetailsProp {
   id: string;
   type: typeof DATA_TYPE.MOVIE | typeof DATA_TYPE.SERIES;
   setBackdrop?: (value: string) => void;
 }
-
 export interface Genre {
   id: number;
   name: string;
 }
-
 export interface Person {
   id: number;
   name: string;
@@ -22,17 +19,14 @@ export interface Person {
   job: string;
   profile_path: string | null;
 }
-
 export interface CreditsResponse {
   id: number;
   cast: Person[] | null;
   crew: Person[] | null;
 }
-
 export interface GenreProps {
   genres: Genre[];
 }
-
 export interface MediaInformationProps {
   media: MediaInformation;
   type: typeof DATA_TYPE.MOVIE | typeof DATA_TYPE.SERIES;
@@ -44,6 +38,7 @@ export interface ActorsDirectorProps {
 }
 
 export interface MediaProps<T extends UnifiedMedia> {
+  genre?: string;
   sizeW: string;
   sizeH: string;
   focusKey?: string;
@@ -63,7 +58,6 @@ export interface MediaItemProp {
   focusKey: string;
   onFocus: (layout: FocusableComponentLayout, props: object, details: FocusDetails) => void;
 }
-
 export interface MediaSection {
   name: string;
   items: UnifiedMedia[];
@@ -74,11 +68,6 @@ export interface GenresWithMediaProps {
 }
 export interface PaginatedResponse<T> {
   results: T[];
-}
-
-export interface Genre {
-  id: number;
-  name: string;
 }
 
 export type UnifiedMedia = {
@@ -92,4 +81,5 @@ export type UnifiedMedia = {
 };
 export interface FocusKeyProps {
   focusKey: string;
+  onMouseFocus?: (focusKey: string) => void;
 }

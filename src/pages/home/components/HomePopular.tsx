@@ -1,18 +1,17 @@
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getPopularMoviesAndSeries } from "../../../api/MovieApi";
-import { MediaContentRow } from "../../../components/mediaContentRow/MediaContentRow";
+import { MediaContentRow } from "../../../components/mediaContentRow";
 import { HomePopularContainer } from "../style/Home.styled";
 import type { HomeProp } from "../../movies/Types/MovieType";
 import type { MediaSection } from "../../mediaDetails/types/MediaInformationType";
-import React from "react";
 import { scrollToElement, useMediaNavigation } from "../../../utils";
 
 export function HomePopular({ onFocus }: HomeProp) {
   const [dataMedia, setDataMedia] = useState<MediaSection[]>();
   const { ref, focusKey } = useFocusable({ onFocus });
   const { restoreFocus } = useMediaNavigation();
-  const onRowFocus = React.useCallback((props?: { x?: number; y?: number }) => scrollToElement(ref, props), [ref]);
+  const onRowFocus = useCallback((props?: { x?: number; y?: number }) => scrollToElement(ref, props), [ref]);
 
   const fetchMoviesSeries = async () => {
     const data = await getPopularMoviesAndSeries();

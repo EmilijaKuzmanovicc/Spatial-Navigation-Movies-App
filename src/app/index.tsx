@@ -1,9 +1,9 @@
-import { Navbar } from "./components/navbar/Navbar";
+import { Navbar } from "../components/navbar";
 import { Outlet } from "react-router-dom";
 import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import { ITEMS_NAME } from "./utils/constants/Constants";
+import { ITEMS_NAME } from "../utils";
 
-function App() {
+export function App() {
   const { ref } = useFocusable({
     focusKey: ITEMS_NAME.APP,
     saveLastFocusedChild: true,
@@ -18,5 +18,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

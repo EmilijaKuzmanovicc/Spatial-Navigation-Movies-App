@@ -1,4 +1,4 @@
-import { CONTENT_RATING, DATA_TYPE } from "../../../utils/constants/Constants";
+import { CONTENT_RATING, DATA_TYPE } from "../../../utils";
 import { HeaderInformations, TextMovieStyle } from "../style/MediaDetails.styled";
 import type { MediaInformationProps } from "../types/MediaInformationType";
 import { GenreInformations } from "./GenreInformations";
